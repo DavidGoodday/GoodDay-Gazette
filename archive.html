@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The GoodDay Gazette — Archive</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f6efe0;
+  --paper-shade: #ede4d2;
+  --ink: #1a1815;
+  --ink-soft: #4a4640;
+  --rule: #1a1815;
+  --accent: #8a1c1c;
+  --muted: #756e60;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper); color: var(--ink);
+  font-family: "Iowan Old Style","Palatino Linotype","Hoefler Text","Times New Roman",serif;
+  font-size: 15px; line-height: 1.55;
+}
+.paper {
+  max-width: 980px; margin: 0 auto;
+  padding: 28px 36px 60px;
+  background: repeating-linear-gradient(45deg, transparent 0, transparent 12px, rgba(0,0,0,0.012) 12px, rgba(0,0,0,0.012) 13px), var(--paper);
+}
+.masthead { text-align: center; border-bottom: 4px double var(--rule); padding-bottom: 12px; margin-bottom: 28px; }
+.masthead-top {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-soft); border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 8px;
+}
+.masthead-actions a {
+  font-family: "Courier New",monospace; font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase;
+  background: transparent; color: var(--ink); border: 1px solid var(--rule); padding: 4px 10px;
+  text-decoration: none; transition: background 0.15s, color 0.15s;
+}
+.masthead-actions a:hover { background: var(--ink); color: var(--paper); }
+.masthead h1 {
+  font-family: "Old English Text MT","UnifrakturMaguntia","Cinzel","Bodoni 72","Didot",serif;
+  font-weight: 900; font-size: 68px; letter-spacing: 0.01em; margin: 4px 0 2px; line-height: 1;
+  font-variant: small-caps; text-shadow: 0 0 1px var(--ink);
+}
+.masthead .subtitle {
+  font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-soft); margin-top: 6px;
+}
+.archive-intro {
+  text-align: center; font-style: italic; color: var(--ink-soft);
+  font-size: 16px; max-width: 600px; margin: 0 auto 32px;
+}
+.issue-list { display: flex; flex-direction: column; gap: 0; }
+.issue {
+  display: grid; grid-template-columns: 130px 1fr auto; gap: 24px; align-items: start;
+  padding: 22px 0; border-bottom: 1px solid var(--rule);
+}
+.issue:first-of-type { border-top: 3px double var(--rule); }
+.issue-vol {
+  font-family: "Bodoni 72","Didot",serif; font-weight: 900;
+  text-align: center; padding: 14px 8px; background: var(--paper-shade);
+  border: 1px solid var(--rule);
+}
+.issue-vol .num { font-size: 36px; display: block; line-height: 1; }
+.issue-vol .lbl {
+  font-family: "Courier New",monospace; font-size: 10px;
+  letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-soft);
+  display: block; margin-top: 4px;
+}
+.issue-body .kicker {
+  font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px;
+}
+.issue-body h3 {
+  font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 26px;
+  line-height: 1.1; margin: 0 0 6px;
+}
+.issue-body h3 a { color: var(--ink); text-decoration: none; }
+.issue-body h3 a:hover { color: var(--accent); }
+.issue-body .deck { font-style: italic; color: var(--ink-soft); font-size: 14.5px; margin: 0 0 8px; }
+.issue-body .meta {
+  font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.issue-cta {
+  align-self: center;
+}
+.issue-cta a {
+  font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.10em;
+  text-transform: uppercase; background: var(--ink); color: var(--paper);
+  padding: 10px 18px; text-decoration: none; border: 1px solid var(--ink);
+  display: inline-block; transition: background 0.15s, color 0.15s;
+}
+.issue-cta a:hover { background: var(--paper); color: var(--ink); }
+footer.colophon {
+  margin-top: 40px; padding-top: 14px; border-top: 4px double var(--rule);
+  text-align: center; font-family: "Courier New",monospace; font-size: 11px;
+  letter-spacing: 0.05em; color: var(--ink-soft);
+}
+@media (max-width: 700px) {
+  .masthead h1 { font-size: 46px; }
+  .issue { grid-template-columns: 1fr; }
+  .issue-vol { max-width: 130px; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="masthead-top">
+      <span>The Archive</span>
+      <span>All past issues, indexed by week</span>
+      <div class="masthead-actions">
+        <a href="./index.html" title="Latest issue">⏵ Latest Issue</a>
+      </div>
+    </div>
+    <h1>The GoodDay Gazette</h1>
+    <div class="subtitle">Archive · Internal Edition</div>
+  </header>
+
+  <p class="archive-intro">A weekly internal newsletter covering Sales, Partnerships, Merchant Success, Engineering, and the personal section. Issued every Friday. Reporting on the seven days prior.</p>
+
+  <div class="issue-list">
+
+    <div class="issue">
+      <div class="issue-vol">
+        <span class="num">II</span>
+        <span class="lbl">Vol. I · No. 2</span>
+      </div>
+      <div class="issue-body">
+        <div class="kicker">Latest Issue · May 14, 2026</div>
+        <h3><a href="./issues/vol-1-no-2.html">Sierra Madre Goes Live; First Sale Lands at Golf Galaxy</a></h3>
+        <p class="deck">Six pages. New Partnerships desk debuts. TCV pricing reframe. MCP and Ops Portal launch. Tim Kauer joining MS June 1. The Oso &amp; Me payment-terms saga in the Sers Tavern.</p>
+        <div class="meta">Reporting period: May 9 – May 14, 2026 · 6 pages</div>
+      </div>
+      <div class="issue-cta"><a href="./issues/vol-1-no-2.html">Read →</a></div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-vol">
+        <span class="num">I</span>
+        <span class="lbl">Vol. I · No. 1</span>
+      </div>
+      <div class="issue-body">
+        <div class="kicker">Inaugural Issue · May 8, 2026</div>
+        <h3><a href="./issues/vol-1-no-1.html">Canopy Signs; April Closes With Ten Wins</a></h3>
+        <p class="deck">Five pages. Matt Pham's hire, the Lola 720-unit phantom publish, the MCP skills hackathon kickoff, Items v2 and BoMs reach internal review, the multi-brand packaging debate, and the Shopify API 2025-04 deprecation.</p>
+        <div class="meta">Reporting period: May 1 – May 8, 2026 · 5 pages</div>
+      </div>
+      <div class="issue-cta"><a href="./issues/vol-1-no-1.html">Read →</a></div>
+    </div>
+
+  </div>
+
+  <footer class="colophon">
+    <div>The GoodDay Gazette · Internal Distribution</div>
+    <div style="margin-top: 4px;">Published weekly · New issues land every Friday</div>
+  </footer>
+
+</div>
+</body>
+</html>

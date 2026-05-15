@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The GoodDay Gazette — Vol. I No. 1</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f6efe0;
+  --paper-shade: #ede4d2;
+  --ink: #1a1815;
+  --ink-soft: #4a4640;
+  --rule: #1a1815;
+  --accent: #8a1c1c;
+  --gold: #b08431;
+  --muted: #756e60;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: "Iowan Old Style","Palatino Linotype","Hoefler Text","Times New Roman",serif; font-size: 15px; line-height: 1.55; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 28px 36px 60px; background: repeating-linear-gradient(45deg, transparent 0, transparent 12px, rgba(0,0,0,0.012) 12px, rgba(0,0,0,0.012) 13px), var(--paper); }
+.masthead { text-align: center; border-bottom: 4px double var(--rule); padding-bottom: 12px; margin-bottom: 0; }
+.masthead-top { display: flex; justify-content: space-between; align-items: center; font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 8px; }
+.masthead-actions { display: flex; gap: 8px; align-items: center; }
+.masthead-actions button, .masthead-actions a { font-family: "Courier New",monospace; font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase; background: transparent; color: var(--ink); border: 1px solid var(--rule); padding: 4px 10px; cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s; }
+.masthead-actions button:hover, .masthead-actions a:hover { background: var(--ink); color: var(--paper); }
+.masthead h1.title { font-family: "Old English Text MT","UnifrakturMaguntia","Cinzel","Bodoni 72","Didot",serif; font-weight: 900; font-size: 78px; letter-spacing: 0.01em; margin: 4px 0 2px; line-height: 1; font-variant: small-caps; text-shadow: 0 0 1px var(--ink); }
+.masthead .tagline { font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; }
+.masthead .strapline { display: flex; justify-content: space-between; align-items: center; font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink); border-top: 1px solid var(--rule); padding-top: 6px; margin-top: 8px; }
+nav.pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; border-bottom: 2px solid var(--rule); margin-bottom: 22px; }
+.page-btn { font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; background: transparent; color: var(--ink-soft); border: 0; border-right: 1px solid var(--rule); padding: 11px 18px; cursor: pointer; transition: background 0.15s; }
+.page-btn:last-child { border-right: 0; }
+.page-btn:hover { background: var(--paper-shade); color: var(--ink); }
+.page-btn.active { background: var(--ink); color: var(--paper); font-weight: 700; }
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.page-marker { font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); text-align: center; margin-bottom: 14px; }
+.headline { text-align: center; border-bottom: 2px solid var(--rule); padding-bottom: 14px; margin-bottom: 18px; }
+.headline .kicker { font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+.headline h2 { font-family: "Bodoni 72","Didot","Playfair Display","Times New Roman",serif; font-weight: 900; font-size: 46px; line-height: 1.05; margin: 0; letter-spacing: -0.005em; }
+.headline .subhead { font-style: italic; font-size: 17px; color: var(--ink-soft); margin-top: 8px; }
+.byline { font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.lead-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 26px; margin-bottom: 22px; }
+.lead-cols { column-count: 2; column-gap: 22px; column-rule: 1px solid #d4cab4; }
+.three-cols { column-count: 3; column-gap: 22px; column-rule: 1px solid #d4cab4; margin-bottom: 18px; }
+.story p { margin: 0 0 10px; text-align: justify; hyphens: auto; }
+.story p.dropcap::first-letter { font-family: "Bodoni 72","Didot",serif; font-size: 56px; float: left; line-height: 0.85; padding: 4px 8px 0 0; font-weight: 900; }
+.story h3 { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 26px; line-height: 1.1; margin: 0 0 4px; break-inside: avoid; }
+.story h3.small { font-size: 20px; }
+.story .kicker-sm { font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 4px; }
+.sidebar { background: var(--paper-shade); border: 1px solid var(--rule); padding: 14px 16px; break-inside: avoid; }
+.sidebar h4 { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 18px; margin: 0 0 8px; text-align: center; border-bottom: 1px solid var(--rule); padding-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px dotted #b8ad95; font-size: 13px; }
+.stat-row:last-child { border-bottom: 0; }
+.stat-row .label { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; }
+.stat-row .value { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 22px; color: var(--ink); }
+.section-rule { text-align: center; margin: 24px 0 16px; font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.20em; color: var(--ink-soft); text-transform: uppercase; position: relative; }
+.section-rule::before, .section-rule::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--rule); }
+.section-rule::before { left: 0; }
+.section-rule::after { right: 0; }
+hr.thick { border: 0; border-top: 3px double var(--rule); margin: 22px 0; }
+.pullquote { border-top: 3px solid var(--rule); border-bottom: 3px solid var(--rule); padding: 14px 16px; margin: 14px 0; font-family: "Bodoni 72","Didot",serif; font-size: 22px; line-height: 1.25; font-style: italic; text-align: center; break-inside: avoid; }
+.pullquote .attrib { display: block; font-family: "Courier New",monospace; font-style: normal; font-size: 11px; letter-spacing: 0.10em; margin-top: 8px; color: var(--ink-soft); }
+.story ul, .story ol { padding-left: 18px; margin: 6px 0 12px; }
+.story li { margin-bottom: 4px; font-size: 14px; }
+.brief { border-left: 3px solid var(--accent); padding: 6px 0 6px 12px; margin-bottom: 14px; break-inside: avoid; }
+.brief .head { font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.brief h4 { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 17px; margin: 2px 0 4px; line-height: 1.15; }
+.brief p { font-size: 13.5px; margin: 0; }
+.story table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; break-inside: avoid; }
+.story table th { font-family: "Courier New",monospace; font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; text-align: left; border-top: 2px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 6px 8px 6px 0; color: var(--ink-soft); }
+.story table td { border-bottom: 1px dotted #b8ad95; padding: 5px 8px 5px 0; vertical-align: top; }
+.story table tr:last-child td { border-bottom: 1px solid var(--rule); }
+.chart-card { background: var(--paper-shade); border: 1px solid var(--rule); padding: 12px 14px; margin-bottom: 14px; break-inside: avoid; }
+.chart-card h4 { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 16px; margin: 0 0 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+.chart-card canvas { max-height: 220px; }
+.weather-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 2px solid var(--rule); border-bottom: 2px solid var(--rule); margin: 0 0 22px; font-size: 12px; font-family: "Courier New",monospace; }
+.weather-strip > div { padding: 8px 12px; border-right: 1px solid var(--rule); text-align: center; }
+.weather-strip > div:last-child { border-right: 0; }
+.weather-strip .num { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 22px; color: var(--ink); }
+.weather-strip .lbl { text-transform: uppercase; letter-spacing: 0.10em; color: var(--ink-soft); font-size: 10px; margin-top: 2px; }
+footer.colophon { margin-top: 30px; padding-top: 14px; border-top: 4px double var(--rule); text-align: center; font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-soft); }
+.story-block { break-inside: avoid; margin-bottom: 12px; }
+@media (max-width: 800px) {
+  .masthead h1.title { font-size: 52px; }
+  .lead-grid { grid-template-columns: 1fr; }
+  .lead-cols, .three-cols { column-count: 1; }
+  .weather-strip { grid-template-columns: repeat(2, 1fr); }
+  .weather-strip > div { border-bottom: 1px solid var(--rule); }
+}
+.table-search { display: flex; align-items: center; gap: 8px; margin: 6px 0 10px; font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.table-search input { flex: 1; padding: 6px 10px; font-family: inherit; font-size: 11px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); outline: none; }
+.table-search input:focus { border-color: var(--accent); background: #fff; }
+body.reading-mode { --paper: #faf6ec; --ink: #2a2620; }
+body.reading-mode .paper { background: var(--paper); }
+body.reading-mode .three-cols, body.reading-mode .lead-cols { column-count: 1; column-rule: 0; max-width: 720px; margin-left: auto; margin-right: auto; }
+body.reading-mode .lead-grid { grid-template-columns: 1fr; }
+body.reading-mode .story p, body.reading-mode .story li { font-size: 16px; line-height: 1.7; }
+@media print {
+  body { background: #fff; }
+  .paper { box-shadow: none; padding: 0; }
+  nav.pagination, .masthead-actions, .table-search { display: none !important; }
+  .page { display: block !important; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .three-cols, .lead-cols { column-count: 2; }
+  a { color: inherit; text-decoration: none; border-bottom: 0; }
+  .pullquote, .chart-card, .sidebar { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="masthead-top">
+      <span>Vol. I &nbsp; · &nbsp; No. 1</span>
+      <span>Friday, May 8, 2026 &nbsp;·&nbsp; <span>Archived</span></span>
+      <div class="masthead-actions">
+        <a href="../archive.html" title="View past issues">⏴ Archive</a>
+        <button id="printBtn" title="Print this issue">⎙ Print</button>
+        <button id="darkBtn" title="Toggle reading mode">◐ Reading</button>
+      </div>
+    </div>
+    <h1 class="title">The GoodDay Gazette</h1>
+    <div class="tagline">"All the inventory that's fit to print."</div>
+    <div class="strapline">
+      <span>Founded MMXXVI · Austin, TX</span>
+      <span>Reporting period · May 1 – May 8, 2026</span>
+      <span>Issued every Friday</span>
+    </div>
+  </header>
+
+  <nav class="pagination" role="tablist">
+    <button class="page-btn active" data-page="1">Pg. 1 — Front Page</button>
+    <button class="page-btn" data-page="2">Pg. 2 — Sales Desk</button>
+    <button class="page-btn" data-page="3">Pg. 3 — Merchant Success</button>
+    <button class="page-btn" data-page="4">Pg. 4 — Engineering &amp; Product</button>
+    <button class="page-btn" data-page="5">Pg. 5 — Around GoodDay</button>
+  </nav>
+
+  <!-- PAGE 1 -->
+  <section class="page page-1 active" data-page="1">
+    <div class="page-marker">— Page 1 — Top of the Fold —</div>
+    <div class="weather-strip">
+      <div><div class="num">22</div><div class="lbl">Sales Calls</div></div>
+      <div><div class="num">34</div><div class="lbl">MS Syncs</div></div>
+      <div><div class="num">153</div><div class="lbl">Pylon Tickets</div></div>
+      <div><div class="num">21+</div><div class="lbl">PRs Merged</div></div>
+      <div><div class="num">1</div><div class="lbl">New Hire</div></div>
+    </div>
+
+    <div class="headline">
+      <div class="kicker">Sales · Above the Fold</div>
+      <h2>Canopy Signs; April Closes With Ten Wins</h2>
+      <div class="subhead">Clayton &amp; Crume and Mirror Palais verbal yeses round out a banner month for GTM as Hencer rallies the team toward CPG and multi-brand packaging.</div>
+      <div class="byline">By the GTM Desk · Filed from #go-to-market</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="story lead-cols">
+        <p class="dropcap">"Canopy contract just came through &mdash; boom boom!" Kyle Hency posted to <strong>#go-to-market</strong> at 1:44 p.m. on Wednesday, capping a week in which GoodDay logged verbal commitments from three additional brands. Together with prior-week closures, the company expects to record <strong>ten new merchant wins for April</strong> &mdash; a personal-best month for the GTM team.</p>
+        <p>The Canopy paper followed a fast-moving solutioning push by Dave Wardell and Kelley Flatley to scope a workable approach to Canopy's incumbent fulfillment provider, Fullfill, and to confirm Simple Bundles handles their bundle catalog without unfurling at third-party sales channels.</p>
+        <p>Verbal yeses from <strong>Clayton &amp; Crume</strong> (Mon., May 5) and <strong>Mirror Palais</strong> (Kelley's relationship) close out the month's pipeline. Kelley emailed Eric Best at Mirror Palais "an hour or two ago" Thursday afternoon awaiting paper.</p>
+        <p>Kyle has set the tone for May: scaling against CPG &mdash; where Evan Smith warns subscriptions will surface as a recurring requirement &mdash; and answering the multi-brand question. "We could build a mgmt portal that is pure reporting, across all the brands," Wardell suggested.</p>
+        <p>Meagan Herfkens Hency is testing a new website-visitor tracking tool, RB2B, with hits piped into <code>#sales-leads</code>. Doss has been spotted "enjoying our ROI Calculator." Both signals suggest the top of the funnel is moving.</p>
+        <p>Pre-sales is still the rough patch. Hencer has had to slow-roll TA3 after late-stage scope creep. The Beard Club's "1:many on Virtual Kits" inquiry was deemed solvable but unprioritized: "Couldn't imagine us solving before July unless it is really big," Wardell wrote.</p>
+      </div>
+      <aside class="sidebar">
+        <h4>The Tally</h4>
+        <div class="stat-row"><span class="label">Verbal yeses</span><span class="value">3</span></div>
+        <div class="stat-row"><span class="label">April wins (proj.)</span><span class="value">10</span></div>
+        <div class="stat-row"><span class="label">Prospect calls</span><span class="value">22</span></div>
+        <div class="stat-row"><span class="label">Customer syncs</span><span class="value">34</span></div>
+        <div class="stat-row"><span class="label">Pylon tickets</span><span class="value">153</span></div>
+        <div class="stat-row"><span class="label">Critical incidents</span><span class="value">9</span></div>
+        <div class="stat-row"><span class="label">Sers reports</span><span class="value">20+</span></div>
+      </aside>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="three-cols story">
+      <div class="story-block">
+        <div class="kicker-sm">People · Hires</div>
+        <h3 class="small">Matt Pham Joins as Merchant Success Manager</h3>
+        <p>The Merchant Success bench gained a tenth player Monday as <strong>Matt Pham</strong> reported for his first day. Hunter Leeming announced the news in <code>#merchant-success</code>. Matt brings end-to-end NetSuite rollout experience from a decade in fashion. "I'm stoked to try something new," he wrote. "GoodDay excites me."</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Operations · Incident</div>
+        <h3 class="small">Stuck-Processing Cron Resurfaces in Lola Inventory Misfire</h3>
+        <p>An eight-month-old <code>purchase_receipt</code> ledger entry produced a phantom +720-unit publish to Lola Blankets at Landis early Tuesday, with a +1,296 on item 334310 minutes later. Wardell traced the publish to GoodDay's standard ledger pipeline.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Product · MCP</div>
+        <h3 class="small">MCP Countdown Begins; Skills Hackathon Forming</h3>
+        <p>With the Claude MCP heading toward GA, Wardell put a public call out at the All-Hands for operators to build merchant-facing Claude Skills: <em>Safety Stock</em>, <em>Channel Balance</em>, and <em>Inventory Health Check</em> are the three named candidates.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Product · Engineering</div>
+        <h3 class="small">Items v2, BoMs &amp; Co-Man Suite Hit Internal Review</h3>
+        <p>Wardell shared the new internal product-review cadence: Items v2 general (5/4), BoMs (5/4), MCP (week of 5/11), Virtual Kits (week of 5/18). Each feature must be "ready to roll out to 1–2 beta merchants" by review.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Sales · Strategy</div>
+        <h3 class="small">Multi-Brand Packaging Question Heats Up</h3>
+        <p>Evan Smith took the multi-brand pricing strategy to the team Thursday evening, citing Bisby Kids / Little English as a clean test case. Evan proposed rolled GMV pricing with a 10–20% discount; Kyle pushed back past two brands.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Engineering · Reliability</div>
+        <h3 class="small">Shopify API Version 2025-04 Officially Deprecated</h3>
+        <p>Noel flagged that GoodDay's current Shopify API version, 2025-04, has been deprecated &mdash; the suspected source of the recent inventory API "breaking change." Move to 2026-01 is now P0.</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      "We have all become overly reliant on the AI. Should have been drop-everything moment and prioritized above all else."
+      <span class="attrib">— Dave Wardell, on the Lola publish post-mortem · #critical-support</span>
+    </div>
+
+    <div class="section-rule">— Continued on Pages 2–5 —</div>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section class="page page-2" data-page="2">
+    <div class="page-marker">— Page 2 — Sales Desk —</div>
+    <div class="headline">
+      <div class="kicker">From the Sales Desk</div>
+      <h2>Pipeline Spans CPG, Wholesale &amp; Multi-Brand Holding Cos</h2>
+      <div class="subhead">Twenty-two prospect calls in seven days; Kelley and Hencer split the load down the middle as new playbooks form on packaging, conferences, and pre-sales.</div>
+      <div class="byline">Sourced from #sales-support, #go-to-market, and Gong</div>
+    </div>
+
+    <div class="three-cols story">
+      <div class="story-block">
+        <div class="kicker-sm">Closes · Pipeline</div>
+        <h3 class="small">Canopy: Across the Line</h3>
+        <p>Canopy's contract paper landed Wednesday afternoon. Kickoff tentatively Mon. 5/18, built around an extended discovery on Fullfill order flows. Kelley: "doing a deeper discovery than normal with Dave (and potentially Leeor?)."</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Discovery · Late Stage</div>
+        <h3 class="small">Juliet's MHW Path Cleared</h3>
+        <p>Kelley scheduled a discovery call with Allison from Juliet to align on integrating with MHW. "If we can align on this — this should be quick to close. They've vocalized they're ready to move forward."</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Marketing · Funnel</div>
+        <h3 class="small">RB2B Visitor Tracking Goes Live</h3>
+        <p>Meagan stood up RB2B website-visitor tracking and routed unmasked visitor signals into <code>#sales-leads</code>. Stock MFG was back on the site Tuesday; MeUndies' CEO opened a follow-up email; Doss has been on the ROI Calculator.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Conferences · Targeting</div>
+        <h3 class="small">Two Shows Surface for Spring 2026</h3>
+        <p>Hencer flagged two events worth attending or sponsoring: <em>Specialty Food Show 2026</em> ("5,000 food booths, best vacation") and <em>Shoppe Object NYC</em>. Harish offered to broker an NYC founders dinner via Care+Wear's Chaitenya.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Strategy · Multi-Brand</div>
+        <h3 class="small">Pricing the Holding-Co Pattern</h3>
+        <p>Evan's question: how do we price multi-brand customers when they want a discount but inventory stays separate? Evan proposed rolled GMV pricing with a 10–20% discount; Kyle pushed back past two brands. Recharge is on Evan's list to engage on subscriptions.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Pre-Sales · Friction</div>
+        <h3 class="small">TA3 Slows; Beard Club Pushes Limits</h3>
+        <p>TA3 reopened a Pre-sales requirement late, forcing Hencer to re-frame. The Beard Club's "1:many on Virtual Kits" inquiry — same SKU mapped to seven kit product IDs — was deemed solvable but unprioritized.</p>
+      </div>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="story">
+      <div class="kicker-sm">Gong Ledger · Prospect Calls (Kyle Hency &amp; Kelley Flatley)</div>
+      <h3>Twenty-Two Calls in Seven Days</h3>
+      <div class="table-search"><span>Filter:</span><input type="text" placeholder="Search calls by name or date..." data-table="prospectCalls" /></div>
+      <table id="prospectCalls">
+        <thead><tr><th>Date</th><th>Call</th><th>Length</th></tr></thead>
+        <tbody>
+          <tr><td>5/01</td><td>Mike Colich and Kelley Flatley</td><td>31m</td></tr>
+          <tr><td>5/04</td><td>GoodDay × Clayton &amp; Crume</td><td>61m</td></tr>
+          <tr><td>5/04</td><td>Paul Gottlich × Kyle Hency</td><td>22m</td></tr>
+          <tr><td>5/04</td><td>Nick Jezienicki × Kyle Hency</td><td>26m</td></tr>
+          <tr><td>5/04</td><td>Rei Lalo and Kelley Flatley</td><td>23m</td></tr>
+          <tr><td>5/05</td><td>GoodDay × Perry Ellis</td><td>18m</td></tr>
+          <tr><td>5/05</td><td>GoodDay × Canopy Connect</td><td>7m</td></tr>
+          <tr><td>5/05</td><td>GoodDay / Full Fill: Troubleshooting incl. Dave</td><td>21m</td></tr>
+          <tr><td>5/05</td><td>Alan Blancato × Kyle Hency</td><td>24m</td></tr>
+          <tr><td>5/05</td><td>Sagar Patel × Kyle Hency</td><td>41m</td></tr>
+          <tr><td>5/06</td><td>GoodDay × NY and Company</td><td>31m</td></tr>
+          <tr><td>5/06</td><td>Chau Tran and Kelley Flatley</td><td>35m</td></tr>
+          <tr><td>5/06</td><td>Michael Rossiter × Kyle Hency</td><td>36m</td></tr>
+          <tr><td>5/06</td><td>Katie Laughridge and Kelley Flatley</td><td>35m</td></tr>
+          <tr><td>5/06</td><td>Intro GoodDay Software demo</td><td>18m</td></tr>
+          <tr><td>5/07</td><td>Brendan Baker × Hency + Wardell</td><td>47m</td></tr>
+          <tr><td>5/07</td><td>Anneke × Kyle Hency</td><td>41m</td></tr>
+          <tr><td>5/07</td><td>GoodDay × Juliet</td><td>26m</td></tr>
+          <tr><td>5/07</td><td>Jeff Arsenault and Kelley Flatley</td><td>30m</td></tr>
+          <tr><td>5/07</td><td>Keri James × Kyle Hency</td><td>27m</td></tr>
+          <tr><td>5/07</td><td>Frederic × Kyle Hency</td><td>19m</td></tr>
+          <tr><td>5/08</td><td>Kyle Hency × Robert Hatfield</td><td>36m</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pullquote">
+      "If we sign all 3 of those, we'll be at 10 total added in April."
+      <span class="attrib">— Kyle Hency, Tues. May 5 · #go-to-market</span>
+    </div>
+  </section>
+
+  <!-- PAGE 3 -->
+  <section class="page page-3" data-page="3">
+    <div class="page-marker">— Page 3 — Merchant Success —</div>
+    <div class="headline">
+      <div class="kicker">Merchant Success Desk</div>
+      <h2>Forty-Nine Old Tickets, A New Hire &amp; A Spring-Cleaned Pylon Queue</h2>
+      <div class="subhead">David Ortiz returns from paternity leave; Seth runs the weekly audit; Hunter coordinates coverage as Tater is out.</div>
+      <div class="byline">Sourced from #merchant-success, Pylon, and Gong customer syncs</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="story lead-cols">
+        <p class="dropcap">It was a heavy week on Pylon. <strong>153 tickets</strong> opened May 1–8 across the merchant base, with 49 of them &mdash; per Seth Horton's Friday audit &mdash; older than seven days. Of those: <strong>20 ready to close</strong>, <strong>26 GoodDay owes the next action</strong>, and <strong>3 legitimately waiting on the customer</strong>.</p>
+        <p>David Ortiz returned from paternity leave Monday and promptly took lead on the queue Tuesday morning. By Wednesday evening he had walked the team through a <em>"spring cleaning":</em> 3 New, 56 On You, 15 On Customer, 19 On Hold.</p>
+        <p>Hunter set the coverage tone Monday: "Busy week. Matt Pham started today, David is back, Seth and Tater are out most of the week."</p>
+        <p>Theme analysis: <strong>inventory mismatches</strong>, <strong>PO &amp; receipt issues</strong>, <strong>QuickBooks integration</strong>, and <strong>data fixes / bulk update fallout</strong>. Tickets to watch: <strong>American Tall</strong>'s GoodDay Sheets refresh has been failing for months (GD-10181, GD-10182); <strong>Hill House Home</strong> needs a transfer line-item deletion (GD-10497).</p>
+      </div>
+      <aside class="sidebar">
+        <h4>Pylon · Aging Audit</h4>
+        <div class="chart-card" style="margin: 0;">
+          <h4 style="font-size: 12px; margin: 0 0 6px;">Open &gt; 7 days, by triage</h4>
+          <canvas id="pylonChart"></canvas>
+        </div>
+        <div class="stat-row" style="margin-top: 8px;"><span class="label">Total opened (7d)</span><span class="value">153</span></div>
+        <div class="stat-row"><span class="label">Open &gt; 7 days</span><span class="value">49</span></div>
+        <div class="stat-row"><span class="label">Status correct</span><span class="value">42</span></div>
+        <div class="stat-row"><span class="label">Status wrong</span><span class="value">7</span></div>
+      </aside>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="three-cols story">
+      <div class="story-block">
+        <div class="kicker-sm">Merchant Spotlights</div>
+        <h3 class="small">Lola: 720-Unit Phantom Publish</h3>
+        <p>The week's lead operations story. Wardell: <em>"My gut is this was a receipt stuck in processing that cron job processed."</em> Item ID 334310 also affected (+1,296). Eng confirmed the publish came from GoodDay's standard ledger pipeline using an 8-month-old purchase-receipt entry.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">American Tall: Sheets Saga Continues</h3>
+        <p>Hunter escalated American Tall's two long-running tickets — calling them out as "going on for months" with data still missing. Wardell asked Troy to triage and bring Noel in on the Sheets pagination side.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Line Change: 312 SKUs Consolidated</h3>
+        <p>River walked Eng through a 312-item soft-delete request following a Line Change Boston Bruins SKU consolidation. <code>XXX-BRUG</code> + <code>XXX-BRUP</code> collapsed into <code>XXX-BRU</code>.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Duvin &amp; Kal Rieman: Bulk Update Mishap</h3>
+        <p>Two tickets to clean up duplicate accounts created during merchant-side bulk updates. River asked Troy whether a company-level soft-delete button — "kind of like a PO and sales order have" — would be feasible. Troy: "Yeah, sounds like a good idea."</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Hill House Home, Burlebo, Eby</h3>
+        <p>Hunter requested help on a Hill House transfer line-item delete (GD-10497). River relayed Burlebo feedback that the NuOrder mismatch file download is blank. James flagged Eby/Lola/Bask cross-channel cost mismatches.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Porte + Hall: PO PDF Customization</h3>
+        <p>River relayed Porte + Hall's request for additional control on the GoodDay-generated PO PDF ahead of a June 1 go-live: logo upload, color/header styling, multi-page T&amp;Cs.</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      "Pylon queue just had a Spring Cleaning 🧹 🧼 🧹 🎉"
+      <span class="attrib">— David Ortiz, Wed. May 6 · #merchant-success</span>
+    </div>
+  </section>
+
+  <!-- PAGE 4 -->
+  <section class="page page-4" data-page="4">
+    <div class="page-marker">— Page 4 — Engineering &amp; Product —</div>
+    <div class="headline">
+      <div class="kicker">Engineering Desk</div>
+      <h2>Twenty-One PRs, Two Hotfixes &amp; A Critical dbt Save</h2>
+      <div class="subhead">Ops Portal goes to prod, COGS MERGE bug squashed, Linear release tracking automated — and Ser keeps watch with hourly post-deploy assessments.</div>
+      <div class="byline">Sourced from #engineering, #critical-support, #product-support, and #sers-tavern</div>
+    </div>
+
+    <div class="three-cols story">
+      <div class="story-block">
+        <div class="kicker-sm">Ship Log · May 1</div>
+        <h3 class="small">21 PRs Merged In a Single Day</h3>
+        <p>Friday opened with a notable shipping volume. Headliner: <em>Ops Portal infrastructure</em> goes prod (Cloud Run + LB + secrets + deploy workflow, PR #6315), with phase-9 polish (#6299) shipping alongside.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Critical dbt Save: COGS MERGE Fix</h3>
+        <p>A NULL=NULL dedup failure on <code>cost_adjustment_id</code> produced duplicate COGS rows (EBY order #1358260 had 45 lines instead of 4). PR #109 replaces the composite key with a synthesized scalar PK. <code>--full-refresh</code> needed on prod to clear 17,893 accumulated duplicates.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Inventory Tail, Day Four</h3>
+        <p>Five PRs continued the inventory-correctness sweep: presales sync runaway with verification reads (#6314), V2 difference-receipt double-count (#6330), receipt-date timing (#6322), UOM misconfig warnings (#6324), vendor UOM conversion for physical kits (#6087).</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Public API Polish Wave</h3>
+        <p>Four documentation PRs synced the OpenAPI contract with live DTOs (#6332, #6333, #6334), shipment-by-nickname route resolution (#6316), api-external wired into the v1 deploy pipeline (#6326).</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Releases Now Self-Update Linear</h3>
+        <p>Noel wired QA/prod release sync into Linear (#6311, #6319). Tickets now self-update statuses on deploy. Include the Linear ticket # in the PR title (e.g. <code>[GD-10354]</code>).</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">Reliability · Watch List</div>
+        <h3 class="small">Shopify API 2025-04 Deprecation</h3>
+        <p>Per Noel: GoodDay is on 2025-04, which Shopify is silently rolling forward — "the breaking change we experienced." Move to 2026-01 is now P0. Tech spec by next Tues. EOD, kickoff Thursday.</p>
+      </div>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="lead-grid">
+      <div class="story">
+        <div class="kicker-sm">From the Sers Tavern</div>
+        <h3>Twenty-Plus Incident Reports From the Hourly Watch</h3>
+        <p style="font-size: 14px;">The freshly minted <code>#sers-tavern</code> channel has settled into a rhythm: Ser posts structured 6-hour post-deploy assessments on a near-hourly cadence. Twenty-plus structured threads flowed through this week.</p>
+        <ul style="font-size: 14px;">
+          <li><strong>EBY ValidationErrorHttpException</strong> — 4th consecutive post-resurgence, 6.5× volume jump (2 → 13 events). Direct outreach + API-layer null/units validator now P0.</li>
+          <li><strong>Onboarding 409 topic-provisioning</strong> — 13th consecutive window, 24 distinct merchants. MADE Hoops, The Normal Brand, Paka Apparel all new this week.</li>
+          <li><strong>shopify-worker timeout oscillation</strong> — 12-cycle 1014-byte signature pattern broke to standard envelope, but 121s+ Cloud Run kills continue intermittently.</li>
+          <li><strong>m=83 Ten Thousand <code>size=NaN</code></strong> — frontend client-side <code>NaN</code> serialization on PO typeahead.</li>
+          <li><strong>QuickBooks realmId 451704945</strong> — stale Intuit subscription needs revoke or placeholder.</li>
+        </ul>
+      </div>
+      <aside class="sidebar">
+        <h4>Critical-Support Tickets (7d)</h4>
+        <div class="stat-row"><span class="label">Total tickets</span><span class="value">9</span></div>
+        <div class="stat-row"><span class="label">By Wardell</span><span class="value">3</span></div>
+        <div class="stat-row"><span class="label">By David</span><span class="value">2</span></div>
+        <div class="stat-row"><span class="label">By Hunter</span><span class="value">1</span></div>
+        <div class="stat-row"><span class="label">By Noel</span><span class="value">2</span></div>
+        <div class="stat-row"><span class="label">From GitHub</span><span class="value">1</span></div>
+        <h4 style="margin-top: 14px;">Sers Tavern Activity</h4>
+        <div class="stat-row"><span class="label">Threads (7d)</span><span class="value">20+</span></div>
+        <div class="stat-row"><span class="label">MS-driven probes</span><span class="value">8</span></div>
+        <div class="stat-row"><span class="label">Auto incident posts</span><span class="value">12+</span></div>
+      </aside>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="story">
+      <div class="kicker-sm">Product Support · This Week's Top Cases</div>
+      <h3>Six Open Items in #product-support</h3>
+      <ul>
+        <li><strong>Duvin Duplicate Accounts</strong> (GD-10508) — River + Seth blocked. Soft-delete button requested.</li>
+        <li><strong>Hill House Home Transfer Line-Item Delete</strong> (GD-10497).</li>
+        <li><strong>Line Change Items v2 Crash</strong> — David and River both unable to load. Multiple screenshots logged.</li>
+        <li><strong>Line Change BRUG Soft Delete</strong> — River filed the 312-item cleanup.</li>
+        <li><strong>Burlebo NuOrder File Download Bug</strong> — Blank CSV.</li>
+        <li><strong>Porte + Hall PO PDF Customization</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PAGE 5 -->
+  <section class="page page-5" data-page="5">
+    <div class="page-marker">— Page 5 — Around GoodDay —</div>
+    <div class="headline">
+      <div class="kicker">Around GoodDay</div>
+      <h2>All-Hands, VOTM, &amp; The Personal Section</h2>
+      <div class="subhead">A new operator-focused skills hackathon on the docket; a culture call-out; and a personal good-news roll call from the team.</div>
+      <div class="byline">Sourced from Notion (Weekly All Hands &amp; Voice of the Merchant)</div>
+    </div>
+
+    <div class="three-cols story">
+      <div class="story-block">
+        <div class="kicker-sm">All Hands · Wed. May 6</div>
+        <h3 class="small">Welcome Matt; Skills for MCP GA</h3>
+        <p>The Wed. All-Hands kicked off with a check-in. Matt Pham was formally welcomed. Wardell raised the operating model question: how the team works alongside Ser and agents, with new expectations attached.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Skills Hackathon Ahead of MCP GA</h3>
+        <p>The release-notes section opened with a call to operators: build merchant-facing Claude Skills before MCP goes GA. Three named candidates: <em>Safety Stock</em>, <em>Channel Balance</em> (David and Dave already prototyped), and <em>Inventory Health Check</em>.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Demos On Deck</h3>
+        <p>Three demos slated: <em>WMS Onboarding + Claude Auto Mapper</em> (Sai &amp; Willy), <em>Data flow visualizations</em> preview (Troy), and the <em>Co-Man Suite</em> — BoMs, Work Orders, WIP.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker-sm">VOTM · Fri. May 8</div>
+        <h3 class="small">WMS Priorities &amp; Onboarding Tooling</h3>
+        <p>The VOTM agenda this week: 5-min WMS priorities review (Linear board), updates and discussion blocks, 10-min onboarding-improvements segment. Hunter out 5/26–6/5; Seth back from 5/5–5/8.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Sales Support Process Question</h3>
+        <p>A parking-lot item worth tracking: how Pylon should handle pre-Closed-Won deals through GoodDay-Support, and help-center video sharing.</p>
+      </div>
+      <div class="story-block">
+        <h3 class="small">Slack Channel Restructure</h3>
+        <p>Noel's note: <code>#presales-support</code> archived. Use <code>#critical-support</code>, <code>#product-support</code>, and <code>#presales-product</code>.</p>
+      </div>
+    </div>
+
+    <hr class="thick" />
+
+    <div class="lead-grid">
+      <div class="story">
+        <div class="kicker-sm">Personal Section · The Check-In Wall</div>
+        <h3>Good News from the Team</h3>
+        <p><em>From the Wed. 5/6 All-Hands check-in.</em></p>
+        <ul>
+          <li><strong>Kevin</strong> — daughter's first day of school. "She is excited."</li>
+          <li><strong>Matt</strong> — first week at GoodDay. "I love dogsitting so here's a photo of Lincoln."</li>
+          <li><strong>Troy</strong> — <em>"Nein."</em></li>
+          <li><strong>Noel, Willy, Dave, Hunter, Hencer, Vishal, River, Herf</strong> — photos filed.</li>
+        </ul>
+      </div>
+      <aside class="sidebar">
+        <h4>Quick Briefs</h4>
+        <div class="brief"><div class="head">Coverage</div><h4>Troy Has ATC May 4–10</h4><p>Route support via the @atc handle.</p></div>
+        <div class="brief"><div class="head">Tooling</div><h4>Trackstar Adds Data Explorer</h4><p>Read-only API keys also available.</p></div>
+        <div class="brief"><div class="head">Eng Tip</div><h4>Skip Permissions, Mind the DB</h4><p>Kevin: <em>"if you use claude code don't be scared of </em><code>--dangerously-skip-permissions</code><em>."</em></p></div>
+        <div class="brief"><div class="head">Coming Up</div><h4>Co-Man Demo Webinar</h4><p>Tuesday May 19 — 12pm CST / 10am PST.</p></div>
+      </aside>
+    </div>
+
+    <div class="pullquote">
+      "Skills to hand to merchants when we release GoodDay MCP to GA? — calling all operators who have worked at a brand before, this is your time to shine."
+      <span class="attrib">— Weekly All Hands Agenda · Notion</span>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <div>The GoodDay Gazette · Vol. I No. 1 · Issued Friday, May 8, 2026</div>
+    <div style="margin-top: 4px;">Reporting period covers May 1 – May 8, 2026 · Data sources: Slack, Gong, Pylon, HubSpot, Notion</div>
+  </footer>
+</div>
+
+<script>
+function setActivePage(target) {
+  document.querySelectorAll('.page-btn').forEach(b => b.classList.toggle('active', b.dataset.page === target));
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === target));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (history.replaceState) history.replaceState(null, '', '#p' + target);
+}
+document.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', () => setActivePage(btn.dataset.page)));
+(function () { const m = (location.hash || '').match(/p(\d)/); if (m && document.querySelector('.page[data-page="' + m[1] + '"]')) setActivePage(m[1]); })();
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key >= '1' && e.key <= '5') setActivePage(e.key);
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    const cur = parseInt((document.querySelector('.page-btn.active') || {}).dataset?.page || '1', 10);
+    const next = e.key === 'ArrowRight' ? Math.min(5, cur + 1) : Math.max(1, cur - 1);
+    setActivePage(String(next));
+  }
+});
+document.getElementById('printBtn')?.addEventListener('click', () => {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('active'));
+  window.print();
+  setTimeout(() => {
+    const target = (document.querySelector('.page-btn.active') || {}).dataset?.page || '1';
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === target));
+  }, 400);
+});
+if (localStorage.getItem('gazette-reading') === '1') document.body.classList.add('reading-mode');
+document.getElementById('darkBtn')?.addEventListener('click', () => {
+  document.body.classList.toggle('reading-mode');
+  localStorage.setItem('gazette-reading', document.body.classList.contains('reading-mode') ? '1' : '0');
+});
+document.querySelectorAll('.table-search input[data-table]').forEach(input => {
+  input.addEventListener('input', (e) => {
+    const tbl = document.getElementById(e.target.dataset.table);
+    if (!tbl) return;
+    const q = e.target.value.toLowerCase();
+    tbl.querySelectorAll('tbody tr').forEach(tr => { tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+  });
+});
+function drawPylonChart() {
+  const el = document.getElementById('pylonChart');
+  if (!el || !window.Chart || el._drawn) return;
+  el._drawn = true;
+  new Chart(el, {
+    type: 'doughnut',
+    data: { labels: ['Close now', 'GoodDay owes', 'Waiting customer', 'Needs review'], datasets: [{ data: [20, 26, 3, 0], backgroundColor: ['#8a1c1c','#1a1815','#b08431','#756e60'], borderColor: '#f6efe0', borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '55%', plugins: { legend: { position: 'bottom', labels: { font: { family: 'Iowan Old Style, serif', size: 11 }, color: '#1a1815', boxWidth: 10 } } } }
+  });
+}
+const observer = new MutationObserver(() => { const p3 = document.querySelector('.page-3'); if (p3 && p3.classList.contains('active')) drawPylonChart(); });
+document.querySelectorAll('.page').forEach(p => observer.observe(p, { attributes: true, attributeFilter: ['class'] }));
+if (document.querySelector('.page-3.active')) drawPylonChart();
+</script>
+</body>
+</html>
