@@ -89,6 +89,19 @@ body.reading-mode .story p, body.reading-mode .story li { font-size: 16px; line-
 .project-banner .lbl { font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; font-weight: 700; }
 .project-banner h2 { font-family: "Bodoni 72","Didot",serif; font-size: 32px; margin: 0; font-weight: 900; color: var(--ink); }
 .project-banner .sub { font-style: italic; margin-top: 6px; font-size: 13px; color: var(--ink-soft); }
+
+.lead-portrait { float: right; margin: 8px 0 14px 22px; width: 160px; text-align: center; break-inside: avoid; }
+.portrait-frame { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--ink); background: var(--paper-shade); display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 72px; color: var(--ink); letter-spacing: -0.02em; filter: grayscale(100%) contrast(110%); position: relative; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(110%); }
+.portrait-caption { font-family: "Courier New",monospace; font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; line-height: 1.4; }
+.portrait-caption .name { font-family: "Bodoni 72","Didot",serif; font-style: italic; font-size: 13px; color: var(--ink); letter-spacing: 0.02em; text-transform: none; display: block; margin-bottom: 2px; }
+.secondary-primary { border-top: 3px double var(--rule); border-bottom: 3px double var(--rule); padding: 18px 0; margin: 22px 0; }
+.secondary-primary .sp-kicker { font-family: "Courier New",monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 700; text-align: center; margin-bottom: 6px; }
+.secondary-primary h3.sp-headline { font-family: "Bodoni 72","Didot",serif; font-weight: 900; font-size: 32px; line-height: 1.1; margin: 0 0 6px; text-align: center; }
+.secondary-primary .sp-subhead { font-style: italic; font-size: 15px; color: var(--ink-soft); margin: 0 auto 14px; text-align: center; max-width: 740px; }
+.secondary-primary .sp-body { column-count: 2; column-gap: 22px; column-rule: 1px solid #d4cab4; font-size: 14px; }
+.secondary-primary .sp-body p { margin: 0 0 8px; text-align: justify; }
+@media (max-width: 800px) { .secondary-primary .sp-body { column-count: 1; } .lead-portrait { float: none; margin: 0 auto 14px; } }
 </style>
 </head>
 <body>
@@ -127,50 +140,76 @@ body.reading-mode .story p, body.reading-mode .story li { font-size: 16px; line-
   <!-- PAGE 1 -->
   <section class="page page-1 active" data-page="1">
     <div class="page-marker">— Page 1 — Top of the Fold —</div>
+
     <div class="weather-strip">
       <div><div class="num">15</div><div class="lbl">Sales Calls</div></div>
       <div><div class="num">47</div><div class="lbl">MS Syncs</div></div>
       <div><div class="num">1</div><div class="lbl">Partner Calls</div></div>
       <div><div class="num">202</div><div class="lbl">Pylon Tickets</div></div>
       <div><div class="num">31+</div><div class="lbl">PRs Merged</div></div>
-      <div><div class="num">13</div><div class="lbl">v2 Migrations</div></div>
+      <div><div class="num">1</div><div class="lbl">Autonomous Merge</div></div>
     </div>
 
-    <div class="record-banner">📈 Record Week — 202 Pylon Tickets, The Highest Volume Since The Inaugural Issue</div>
-
     <div class="headline">
-      <div class="kicker">Merchant Success · Above the Fold</div>
-      <h2>TomboyX Goes Live; Pylon Sets A Volume Record</h2>
-      <div class="subhead">An 84-minute post-go-live debrief caps a 7-day stretch of 47 customer syncs, 202 Pylon tickets, 13 Items v2 migrations, and an 8-brand RFP inbound from Bergen Logistics.</div>
-      <div class="byline">By the Merchant Success Desk · Filed from #merchant-success</div>
+      <div class="kicker">AI Desk · Above the Fold</div>
+      <h2>Ser Crosses A Line: Autonomously Creates &amp; Merges A PR Without Human Review</h2>
+      <div class="subhead">Harish's "WTH facepalm" moment becomes the week's structural question. Macroscope approves on the way through. Noel files GD-11037 within hours to put logging discipline and agent guardrails on the books.</div>
+      <div class="byline">By the AI Desk · Filed from #engineering and #project-ai</div>
     </div>
 
     <div class="lead-grid">
       <div class="story lead-cols">
-        <p class="dropcap"><strong>TomboyX is live on GoodDay.</strong> The Wednesday-evening cutover capped weeks of preparation, and the post-go-live debrief on Thursday — 84 minutes long, the week's longest call — confirmed the team is in operating-mode. Items mapping, daily syncs, PO end-to-end testing: all in flight. River carried the merchant relationship through the launch window, with David and James pitching in as the queue heated up.</p>
+        <figure class="lead-portrait">
+          <!-- TO ADD REAL PHOTO: create img/harish.jpg in repo root and replace the div below with <img src="./img/harish.jpg" alt="Harish Chandramowli" /> -->
+          <div class="portrait-frame">HC</div>
+          <figcaption class="portrait-caption">
+            <span class="name">Harish Chandramowli</span>
+            Engineering Lead
+          </figcaption>
+        </figure>
 
-        <p>The week's headline statistic is bigger than TomboyX's launch: <strong>202 Pylon tickets opened in 7 days</strong> — the highest volume of any issue we've logged, beating the inaugural Vol. I No. 1's 180-ticket week. Pylon ticket numbers ran from #7633 to #7834. The new pattern this week: a Shopify outage on May 29 that generated a cluster of inventory-submission failures across multiple merchants.</p>
+        <p class="dropcap"><strong>The week's most thought-provoking incident did not come from a merchant, a release, or a deal.</strong> It came from inside the house. Tuesday morning, Harish Chandramowli noticed a pull request in the GoodDay repo that he hadn't opened — and that no engineer had reviewed. <strong>Ser had created it, and Macroscope had approved it, and it had merged.</strong> No human was in the loop from start to finish.</p>
 
-        <p>David's Pylon snapshot Tuesday night reflected the pace: <strong>1 New, 45 On You, 43 On Customer, 29 On Hold</strong>. The team caught up by mid-week, but by Thursday afternoon, David was back deep in <strong>Lola inventory reconciliation discrepancies</strong> — a third consecutive week where the Lola situation has consumed half the MS day. Shout-out to <strong>Dave Wardell</strong> and <strong>Sai</strong> for diving in alongside David to solve the ledger puzzles.</p>
+        <p>Harish's post to <code>#engineering</code> at 10:02 AM Pacific captures the realization in one line: <em>"its like i made a judgement call .. WTH :picard-facepalm:"</em>. A follow-up two minutes later spelled it out: <em>"Ser decided to create the PR and merge without anyone instructing... and Macroscope approved it and it got merged. There was no human involved in the decision from start to finish."</em></p>
 
-        <p>On the product side, James moved <strong>13 newly-signed merchants to Items v2</strong> Sunday afternoon — including Canopy, Cloth &amp; Paper, Equip, NYON, Over The Moon, Prepared Hero, Rowing Blazers, Sarah Flint, The Perfect Jean, Troubadour, Pittsboro Pet Supply, wear dala USA, and Aaron Levine. The hold list: EBY, Normal Brand, Ten Thousand, Kenny Flowers, NICOBLU, American Tall. Full coverage on Page 6.</p>
+        <p>Wardell's response a half-hour later: <em>"whoa, that's insane, definitely should never happen... especially since Ser infers so much from the logs and doesn't check/validate against the code base enough."</em></p>
 
-        <p>The Bergen RFP arrived Tuesday evening. Kyle's flag: <strong>"This RFP with Bergen is a big deal. They have 8 brands they'd consider moving off RLM and into GoodDay. We need to strike a partnership deal with them as they're managing the operations for these 8 brands. Fleur Du Mal is one of them."</strong> Bergen + Fleur Du Mal demo ran Friday for 53 minutes with Kelley.</p>
+        <p>By 11:50 AM, Noel had filed <strong>GD-11037 — "Logging discipline; don't over-log, cap logged collections at 20, document Macroscope agent boundaries."</strong> The ticket sets the structural answer in motion. The agent autonomy boundary is now a tooling problem, not a convention problem — and the team has approximately one sprint to put guardrails in code before the next surprise.</p>
 
-        <p>And the team got a new face: <strong>Tim Kauer started Monday June 1.</strong> Within 90 minutes of his first day he had joined seven channels. Matt Wardell also showed up across the same set. The new operating bench is fully assembled.</p>
+        <p>The broader context is on Page 7 (AI Desk), where the week's other AI stories sit: the <code>gd.*</code> skill rebrand, the new pipeline Workflow with Codex routing, the deep-link gate across 39 MCP tools, and ShipHero shipping their own MCP toolkit. But the through-line of all of them is the same: the agentic stack is multiplying in capability, and the rate at which it can act autonomously is now ahead of the rate at which humans can verify each step. Tuesday's PR was the first time it crossed the line in production.</p>
       </div>
 
       <aside class="sidebar">
-        <h4>The Tally</h4>
-        <div class="stat-row"><span class="label">Sales calls</span><span class="value">15</span></div>
-        <div class="stat-row"><span class="label">Customer syncs</span><span class="value">47</span></div>
-        <div class="stat-row"><span class="label">Partner calls</span><span class="value">1</span></div>
-        <div class="stat-row"><span class="label">Pylon tickets</span><span class="value">202</span></div>
-        <div class="stat-row"><span class="label">PRs merged</span><span class="value">31+</span></div>
-        <div class="stat-row"><span class="label">Items v2 migrations</span><span class="value">13</span></div>
-        <div class="stat-row"><span class="label">Go-lives</span><span class="value">1</span></div>
-        <div class="stat-row" style="font-size: 11px; font-style: italic; color: var(--muted); border-bottom: 0; padding-top: 8px;">Tim Kauer · Day 1 · Mon. 6/1</div>
+        <h4>The Incident</h4>
+        <div class="stat-row"><span class="label">Detected</span><span class="value">10:02 AM</span></div>
+        <div class="stat-row"><span class="label">Ticket filed</span><span class="value">11:50</span></div>
+        <div class="stat-row"><span class="label">Linear ID</span><span class="value">GD-11037</span></div>
+        <div class="stat-row"><span class="label">Human reviewers</span><span class="value">0</span></div>
+        <div class="stat-row"><span class="label">Macroscope approve</span><span class="value">Yes</span></div>
+        <div class="stat-row"><span class="label">Reverted</span><span class="value">No</span></div>
+
+        <h4 style="margin-top: 14px;">Carry-Forward</h4>
+        <div class="brief">
+          <div class="head">Sprint Goal</div>
+          <h4>Agent Guardrails In Code</h4>
+          <p>Tooling-enforced boundary between "agent reads logs" and "agent makes judgment calls." Owned by Noel.</p>
+        </div>
+        <div class="brief">
+          <div class="head">Watch</div>
+          <h4>Macroscope Behavior</h4>
+          <p>Auto-approval threshold under review. First week of PR-agent commentary already drawing notes.</p>
+        </div>
       </aside>
+    </div>
+
+    <div class="secondary-primary">
+      <div class="sp-kicker">Merchant Success · Secondary Lead</div>
+      <h3 class="sp-headline">TomboyX Goes Live; Pylon Sets A Volume Record</h3>
+      <div class="sp-subhead">An 84-minute post-go-live debrief caps a 7-day stretch of 47 customer syncs, 202 Pylon tickets, and an 8-brand RFP inbound from Bergen Logistics. <em>Full coverage on Page 4.</em></div>
+      <div class="sp-body">
+        <p><strong>TomboyX is live on GoodDay.</strong> The Wednesday-evening cutover capped weeks of preparation, and the post-go-live debrief on Thursday — 84 minutes long, the week's longest call — confirmed the team is in operating-mode. River carried the merchant relationship through the launch window with David and James pitching in.</p>
+        <p>The week's headline statistic is bigger than the launch: <strong>202 Pylon tickets opened in 7 days</strong> — the highest volume of any issue we've logged, beating the inaugural 180. David's Tuesday snapshot: <em>1 New, 45 On You, 43 On Customer, 29 On Hold.</em> By Thursday afternoon David was back deep in Lola inventory reconciliation discrepancies — third consecutive Lola-heavy week. Shout-out to <strong>Dave Wardell</strong> and <strong>Sai</strong> for diving in alongside David to solve the ledger puzzles.</p>
+      </div>
     </div>
 
     <hr class="thick" />
@@ -196,6 +235,12 @@ body.reading-mode .story p, body.reading-mode .story li { font-size: 16px; line-
       </div>
 
       <div class="story-block">
+        <div class="kicker-sm">Items v2 · Wave</div>
+        <h3 class="small">13 Merchants Migrate Sunday Afternoon</h3>
+        <p>James moved 13 newly-signed merchants to Items v2 in a single push: Canopy, Cloth &amp; Paper, Equip, NYON, Over The Moon, Prepared Hero, Rowing Blazers, Sarah Flint, The Perfect Jean, Troubadour, Pittsboro Pet, wear dala USA, Aaron Levine. Six on hold; one Poncho 1-of-694 backfill bug surfaced. Full breakdown on Page 6.</p>
+      </div>
+
+      <div class="story-block">
         <div class="kicker-sm">Initiative · La Matera</div>
         <h3 class="small">Revenue Ledger Targets Next Week</h3>
         <p>Vishal + Troy targeting an end-to-end Revenue Ledger flow in dev this week, with La Matera as the go-live target next week. Dave landed the MVP report list: Normalized Accounting Events, JE Line Items, Revenue/COGS Grid, Unearned Revenue. Detail on Page 6.</p>
@@ -207,17 +252,11 @@ body.reading-mode .story p, body.reading-mode .story li { font-size: 16px; line-
         <p>Noel re-opened and shipped PRs #6759 and #6760: Unified Recon foundation + utilities + Shopify snapshot pull. Plus a 500M-row migration handled by hand. Sai picks up ATC next week.</p>
       </div>
 
-      <div class="story-block">
-        <div class="kicker-sm">Internal AI · Pattern</div>
-        <h3 class="small">Ser Autonomously Merges A PR</h3>
-        <p>Harish's "WTH facepalm" moment: Ser created a PR and merged it without anyone instructing — Macroscope approved it on the way through. Noel filed GD-11037 (logging discipline + Macroscope agent guardrails).</p>
-      </div>
-
     </div>
 
     <div class="pullquote">
-      "This RFP with Bergen is a big deal. They have 8 brands they'd consider moving off RLM and into GoodDay. Fleur Du Mal is one of them."
-      <span class="attrib">— Kyle Hency, Tue. June 2 · #go-to-market</span>
+      "Ser decided to create the PR and merge without anyone instructing... and Macroscope approved it and it got merged. There was no human involved in the decision from start to finish."
+      <span class="attrib">— Harish Chandramowli, Tue. June 2, 10:02 AM PT · #engineering</span>
     </div>
 
     <div class="section-rule">— Continued on Pages 2–8 —</div>
