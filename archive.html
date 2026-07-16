@@ -1,166 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The GoodDay Gazette — Archive</title>
 <style>
-:root { color-scheme: light; --paper: #f6efe0; --paper-shade: #ede4d2; --ink: #1a1815; --ink-soft: #4a4640; --rule: #1a1815; --accent: #8a1c1c; --muted: #756e60; }
-* { box-sizing: border-box; }
-html, body { margin: 0px; padding: 0px; background: var(--paper); color: var(--ink); font-family: "Iowan Old Style", "Palatino Linotype", "Hoefler Text", "Times New Roman", serif; font-size: 15px; line-height: 1.55; }
-.paper { max-width: 980px; margin: 0px auto; padding: 28px 36px 60px; background: repeating-linear-gradient(45deg, transparent 0, transparent 12px, rgba(0,0,0,0.012) 12px, rgba(0,0,0,0.012) 13px), var(--paper); }
-.masthead { text-align: center; border-bottom: 4px double var(--rule); padding-bottom: 12px; margin-bottom: 28px; }
-.masthead-top { display: flex; justify-content: space-between; align-items: center; font-family: "Courier New", monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 8px; }
-.masthead-actions a { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; color: var(--ink); border: 1px solid var(--rule); padding: 4px 10px; text-decoration: none; transition: background 0.15s, color 0.15s; }
-.masthead-actions a:hover { background: var(--ink); color: var(--paper); }
-.masthead h1 { font-family: "Old English Text MT", UnifrakturMaguntia, Cinzel, "Bodoni 72", Didot, serif; font-weight: 900; font-size: 68px; letter-spacing: 0.01em; margin: 4px 0px 2px; line-height: 1; font-variant: small-caps; text-shadow: 0 0 1px var(--ink); }
-.masthead .subtitle { font-family: "Courier New", monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-top: 6px; }
-.archive-intro { text-align: center; font-style: italic; color: var(--ink-soft); font-size: 16px; max-width: 600px; margin: 0px auto 32px; }
-.issue-list { display: flex; flex-direction: column; gap: 0px; }
-.issue { display: grid; grid-template-columns: 130px 1fr auto; gap: 24px; align-items: start; padding: 22px 0px; border-bottom: 1px solid var(--rule); }
-.issue:first-of-type { border-top: 3px double var(--rule); }
-.issue-vol { font-family: "Bodoni 72", Didot, serif; font-weight: 900; text-align: center; padding: 14px 8px; background: var(--paper-shade); border: 1px solid var(--rule); }
-.issue-vol .num { font-size: 36px; display: block; line-height: 1; }
-.issue-vol .lbl { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-top: 4px; }
-.issue-body .kicker { font-family: "Courier New", monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
-.issue-body h3 { font-family: "Bodoni 72", Didot, serif; font-weight: 900; font-size: 26px; line-height: 1.1; margin: 0px 0px 6px; }
-.issue-body h3 a { color: var(--ink); text-decoration: none; }
-.issue-body h3 a:hover { color: var(--accent); }
-.issue-body .deck { font-style: italic; color: var(--ink-soft); font-size: 14.5px; margin: 0px 0px 8px; }
-.issue-body .meta { font-family: "Courier New", monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.issue-cta { align-self: center; }
-.issue-cta a { font-family: "Courier New", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--paper); padding: 10px 18px; text-decoration: none; border: 1px solid var(--ink); display: inline-block; transition: background 0.15s, color 0.15s; }
-.issue-cta a:hover { background: var(--paper); color: var(--ink); }
-footer.colophon { margin-top: 40px; padding-top: 14px; border-top: 4px double var(--rule); text-align: center; font-family: "Courier New", monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-soft); }
-@media (max-width: 700px) {
-  .masthead h1 { font-size: 46px; }
-  .issue { grid-template-columns: 1fr; }
-  .issue-vol { max-width: 130px; }
-}
+:root{--paper:#f6efe0;--ink:#1a1815;--accent:#8a1c1c;--ink-soft:#4a4640;--paper-shade:#ede4d2;--rule:#c9bda3;}
+*{box-sizing:border-box;}
+body{margin:0;background:#e5dcc6;color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;}
+.wrap{max-width:900px;margin:0 auto;background:var(--paper);min-height:100vh;
+  box-shadow:0 0 40px rgba(0,0,0,.18);padding:34px;}
+.mono{font-family:"Courier New",Courier,monospace;}
+h1{font-family:"Bodoni 72","Didot","Bodoni MT",Georgia,serif;font-size:52px;margin:0;text-align:center;font-weight:800;}
+.tagline{text-align:center;font-style:italic;color:var(--ink-soft);margin:6px 0 4px;}
+.rule{border-bottom:3px double var(--ink);margin:14px 0 24px;}
+.issue{border:1px solid var(--rule);background:var(--paper-shade);padding:18px 20px;margin-bottom:16px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.issue.latest{border:2px solid var(--accent);}
+.issue h2{font-family:"Bodoni 72","Didot",Georgia,serif;font-size:22px;margin:0 0 4px;}
+.issue .meta{font-family:"Courier New",monospace;font-size:12px;color:var(--ink-soft);}
+.issue .badge{font-family:"Courier New",monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);font-weight:bold;}
+.issue a{font-family:"Courier New",monospace;font-size:12px;text-transform:uppercase;letter-spacing:1px;
+  background:var(--ink);color:var(--paper);text-decoration:none;padding:10px 16px;border-radius:2px;white-space:nowrap;}
+.issue a:hover{background:var(--accent);}
 </style>
 </head>
 <body>
-<div class="paper">
+<div class="wrap">
+  <h1>The GoodDay Gazette</h1>
+  <div class="tagline">"All the inventory that's fit to print." — Back Issues</div>
+  <div class="rule"></div>
 
-  <header class="masthead">
-    <div class="masthead-top">
-      <span>The Archive &middot; Indexed By Week</span>
-      <div class="masthead-actions"><a href="index.html">&#9205; Latest Issue</a></div>
+  <div class="issue latest">
+    <div>
+      <span class="badge">★ Latest Issue</span>
+      <h2>Vol. I · No. 11</h2>
+      <div class="meta">Reporting July 10 – 16, 2026 · Issued Thu July 16 · 8 pages</div>
     </div>
-    <h1>The GoodDay Gazette</h1>
-    <div class="subtitle">All Past Issues, Indexed By Week</div>
-  </header>
-
-  <p class="archive-intro">A weekly internal newsletter covering Sales, Partnerships, Merchant Success, Engineering, and the personal section. Issued every Friday. Reporting on the seven days prior.</p>
-
-  <div class="issue-list">
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">IX</span><span class="lbl">Vol. I &middot; No. 9</span></div>
-      <div class="issue-body">
-        <div class="kicker">Latest Issue &middot; July 3, 2026</div>
-        <h3><a href="issues/vol-1-no-9.html">v0.135.0 Ships The Fractional Platform — And Nearly Runs Prod Out Of Disk</a></h3>
-        <div class="deck">Eight pages. The six-decimal quantity platform ships as major release v0.135.0, but hand-run online migrations balloon the database until Cloud SQL shuts the prod primary down to save itself; ledger_entries takes eight attempts to migrate. Toccin verbally commits and the first brands off Bergen begin to sign. Evan co-funds a repeatable Orderful EDI connector ($10K) and courts JOOR to blunt NuOrder. Prepared Hero's blankets run 95K units off; Lola's Shopify recon silently stops (GD-11898). Loop returns move from go-live to hardening at Duvin. The MCP gets a ticketed intake — and a sellable-stock bug (GD-11850). The Austin onsite locks to Aug 18–20.</div>
-        <div class="meta">Reporting Period: June 26 – July 2, 2026 · 8 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-9.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">VIII</span><span class="lbl">Vol. I &middot; No. 8</span></div>
-      <div class="issue-body">
-        <div class="kicker">June 26, 2026</div>
-        <h3><a href="issues/vol-1-no-8.html">Quantities Go Fractional End-To-End; Loop Returns Goes Live At Duvin</a></h3>
-        <div class="deck">Eight pages. The six-decimal quantity migration goes end-to-end and reaches the integration boundaries. Duvin flips live on native Loop Returns — a platform first. An 11.75 MB poison message wedges the prod worker for ~30 hours. A $2M RLM bill hands GoodDay a portfolio off Bergen (Guizio signed; Toccin and a ~$50M brand in proposal). MCP gains write powers and a create-SO tool. Lola's Veracore shipment hangs in "Syncing"; a reserve-unit sync gap surfaces at Laundry Sauce.</div>
-        <div class="meta">Reporting Period: June 19 – June 25, 2026 · 8 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-8.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">VII</span><span class="lbl">Vol. I &middot; No. 7</span></div>
-      <div class="issue-body">
-        <div class="kicker">June 19, 2026</div>
-        <h3><a href="issues/vol-1-no-7.html">Revenue Ledger Reaches Production; A Ten-Release Week Pours The Decimal Foundation</a></h3>
-        <div class="deck">Eight pages. The revenue ledger and reporting go live on the prod store. Ten releases ship and the first ledger table flips to decimal precision. Ten Thousand's surplus sale stress-tests the single-owner sync model (~1,350 variants). A potential first Brightpearl rip-and-replace — Bisby Kids, Little English, 3 Marthas. Seventeen partner calls and a Joor connector push. Seniq builds its own MCP skills.</div>
-        <div class="meta">Reporting Period: June 12 – June 18, 2026 · 8 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-7.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">VI</span><span class="lbl">Vol. I &middot; No. 6</span></div>
-      <div class="issue-body">
-        <div class="kicker">June 12, 2026</div>
-        <h3><a href="issues/vol-1-no-6.html">Tuesday's Recon Page Goes Down; Sai Lands The Fix By Mid-Morning</a></h3>
-        <div class="deck">Eight pages. Six merchants hit the inventory recon outage; Sai's fix lands by 10 AM. Record 58-customer-sync week. v0.131.0 branch cut; WMS Onboarding wizard consolidates. Three kickoffs lined up (Guizio, 12th Tribe, ERD). Harish ships Sigma BI workbook in 10 minutes thanks to Troy's skills.</div>
-        <div class="meta">Reporting Period: June 5 – June 11, 2026 · 8 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-6.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">V</span><span class="lbl">Vol. I &middot; No. 5</span></div>
-      <div class="issue-body">
-        <div class="kicker">June 5, 2026</div>
-        <h3><a href="issues/vol-1-no-5.html">TomboyX Goes Live; Pylon Sets A Volume Record</a></h3>
-        <div class="deck">Eight pages. NEW Product Project page sweeps 10 channels. Record-setting 202 Pylon tickets. TomboyX cuts over with an 84-minute post-go-live debrief. Items v2 migrates 13 merchants. Bergen RFP for 8 brands off RLM. Revenue Ledger targets La Matera next week. Sers Tavern triage now on the MS page.</div>
-        <div class="meta">Reporting Period: May 29 – June 4, 2026 · 8 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-5.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">IV</span><span class="lbl">Vol. I &middot; No. 4</span></div>
-      <div class="issue-body">
-        <div class="kicker">May 29, 2026</div>
-        <h3><a href="issues/vol-1-no-4.html">Kyle Reframes the Pitch; Co-Man, Returns &amp; Partner APIs Lead The Webinar</a></h3>
-        <div class="deck">Seven pages. NEW AI Desk page debuts. Hencer "deprecates MCP" from the marketing motion. First MCP skills package ships. Branch deal scramble. Global-E acquires Passport. Thursday's app-wide slowness incident. Canopy kickoff lands strong.</div>
-        <div class="meta">Reporting Period: May 22 – May 28, 2026 · 7 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-4.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">III</span><span class="lbl">Vol. I &middot; No. 3</span></div>
-      <div class="issue-body">
-        <div class="kicker">May 22, 2026</div>
-        <h3><a href="issues/vol-1-no-3.html">"Agent-Driven Operations" Becomes the Pitch; The Lead Resonates</a></h3>
-        <div class="deck">Six pages. NYC week reframes positioning around agents. Codeture (Fulfil partner to Mejuri, Abbott Lyon, Casper) inquires. Moselle partnership begins with Canopy. Lola tariffs &amp; duties go live. Thursday's API rate-limit scare.</div>
-        <div class="meta">Reporting Period: May 15 – May 21, 2026 · 6 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-3.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">II</span><span class="lbl">Vol. I &middot; No. 2</span></div>
-      <div class="issue-body">
-        <div class="kicker">May 14, 2026</div>
-        <h3><a href="issues/vol-1-no-2.html">New Partnerships Desk Debuts; The TCV Pricing Reframe</a></h3>
-        <div class="deck">Six pages. New Partnerships desk debuts. TCV pricing reframe. MCP and Ops Portal launch. Tim Kauer joining MS June 1. The Oso &amp; Me payment-terms saga in the Sers Tavern.</div>
-        <div class="meta">Reporting Period: May 9 – May 14, 2026 · 6 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-2.html">Read →</a></div>
-    </div>
-
-    <div class="issue">
-      <div class="issue-vol"><span class="num">I</span><span class="lbl">Vol. I &middot; No. 1</span></div>
-      <div class="issue-body">
-        <div class="kicker">May 8, 2026</div>
-        <h3><a href="issues/vol-1-no-1.html">The Inaugural Issue</a></h3>
-        <div class="deck">Five pages. Matt Pham's hire, the Lola 720-unit phantom publish, the MCP skills hackathon kickoff, Items v2 and BoMs reach internal review, the multi-brand packaging debate, and the Shopify API 2025-04 deprecation.</div>
-        <div class="meta">Reporting Period: May 1 – May 8, 2026 · 5 Pages</div>
-      </div>
-      <div class="issue-cta"><a href="issues/vol-1-no-1.html">Read →</a></div>
-    </div>
-
+    <a href="./index.html">Read →</a>
   </div>
 
-  <footer class="colophon">
-    The GoodDay Gazette · Archive · Vol. I, Nos. 1–9<br>
-    Published weekly · Internal distribution only · Austin, TX
-  </footer>
+  <div class="issue">
+    <div><h2>Vol. I · No. 10</h2><div class="meta">July 3 – 10, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-10.html">Read →</a>
+  </div>
 
+  <div class="issue">
+    <div><h2>Vol. I · No. 9</h2><div class="meta">June 26 – July 2, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-9.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 8</h2><div class="meta">June 19 – 25, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-8.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 7</h2><div class="meta">June 12 – 18, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-7.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 6</h2><div class="meta">June 5 – 11, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-6.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 5</h2><div class="meta">May 29 – June 4, 2026 · 8 pages</div></div>
+    <a href="./issues/vol-1-no-5.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 4</h2><div class="meta">May 22 – 28, 2026 · 7 pages</div></div>
+    <a href="./issues/vol-1-no-4.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 3</h2><div class="meta">May 15 – 21, 2026 · 6 pages</div></div>
+    <a href="./issues/vol-1-no-3.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 2</h2><div class="meta">May 9 – 14, 2026 · 6 pages</div></div>
+    <a href="./issues/vol-1-no-2.html">Read →</a>
+  </div>
+  <div class="issue">
+    <div><h2>Vol. I · No. 1</h2><div class="meta">May 1 – 8, 2026 · 5 pages</div></div>
+    <a href="./issues/vol-1-no-1.html">Read →</a>
+  </div>
 </div>
 </body>
 </html>
