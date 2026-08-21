@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The GoodDay Gazette — Vol. I No. 14</title>
+<style>
+:root{
+  --paper:#f6efe0; --ink:#1a1815; --accent:#8a1c1c; --gold:#b08431;
+  --ink-soft:#4a4640; --paper-shade:#ede4d2; --rule:#c9bda3;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:#e5dcc6; color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  line-height:1.5;
+}
+.paper{max-width:1180px;margin:0 auto;background:var(--paper);
+  box-shadow:0 0 40px rgba(0,0,0,.18);}
+.mono{font-family:"Courier New",Courier,monospace;}
+h1,h2,h3,.display{font-family:"Bodoni 72","Didot","Bodoni MT",Didot,"Playfair Display",Georgia,serif;}
+
+/* Masthead */
+.masthead{padding:22px 34px 12px;border-bottom:3px double var(--ink);text-align:center;}
+.masthead .top-rule{display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:10px;}
+.masthead h1{font-size:76px;margin:2px 0 0;letter-spacing:-1px;font-weight:800;line-height:.95;}
+.masthead .tagline{font-style:italic;font-size:15px;color:var(--ink-soft);margin:6px 0 4px;}
+.masthead .issue-line{display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;border-top:1px solid var(--ink);padding-top:8px;margin-top:10px;}
+
+/* Weather strip */
+.weatherbar{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;
+  background:var(--paper-shade);border-bottom:1px solid var(--rule);padding:8px 20px;font-size:12px;}
+.weatherbar span{white-space:nowrap;}
+.weatherbar b{color:var(--accent);}
+
+/* Nav */
+.page-nav{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;
+  background:var(--ink);padding:7px 8px;}
+.page-nav button{font-family:"Courier New",monospace;font-size:11px;letter-spacing:.5px;
+  background:transparent;color:#e8dfca;border:1px solid #4a463f;border-radius:2px;
+  padding:11px 12px;cursor:pointer;text-transform:uppercase;transition:.15s;}
+.page-nav button:hover{background:#332f28;}
+.page-nav button.active{background:var(--paper);color:var(--ink);border-color:var(--paper);font-weight:bold;}
+.toolbar{display:flex;gap:4px;}
+.toolbar button{background:transparent;color:#e8dfca;border:1px solid #4a463f;border-radius:2px;
+  font-family:"Courier New",monospace;font-size:11px;padding:11px 10px;cursor:pointer;}
+.toolbar button:hover{background:#332f28;}
+.toolbar a{text-decoration:none;display:inline-flex;}
+
+/* Pages */
+.page{display:none;padding:30px 40px 50px;animation:fade .25s ease;}
+.page.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.section-flag{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);
+  padding-bottom:5px;margin-bottom:16px;}
+.section-flag .flag{font-family:"Courier New",monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);font-weight:bold;}
+.section-flag .pageno{font-family:"Courier New",monospace;font-size:11px;color:var(--ink-soft);}
+
+.headline{text-align:center;margin-bottom:18px;}
+.headline .kicker{font-family:"Courier New",monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:6px;}
+.headline h2{font-size:40px;line-height:1.05;margin:4px 0 8px;font-weight:800;}
+.headline .subhead{font-style:italic;font-size:17px;color:var(--ink-soft);max-width:760px;margin:0 auto;}
+.headline .byline{font-family:"Courier New",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:10px;}
+
+.lead-grid{display:grid;grid-template-columns:2fr 1fr;gap:26px;margin-bottom:22px;}
+.lead-body{column-count:2;column-gap:24px;font-size:14.5px;text-align:justify;}
+.lead-body.single{column-count:1;}
+.lead-body p{margin:0 0 11px;}
+.lead-body p:first-child:first-letter{float:left;font-family:"Bodoni 72","Didot",Georgia,serif;
+  font-size:58px;line-height:44px;padding:4px 8px 0 0;color:var(--accent);font-weight:800;}
+.sidebar{border:1px solid var(--rule);background:var(--paper-shade);padding:16px;font-size:13px;}
+.sidebar h4{font-family:"Courier New",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  border-bottom:1px solid var(--ink);padding-bottom:5px;margin:0 0 10px;color:var(--accent);}
+.sidebar ul{margin:0 0 12px;padding-left:16px;}
+.sidebar li{margin-bottom:6px;}
+.stat-row{display:flex;justify-content:space-between;border-bottom:1px dotted var(--rule);padding:5px 0;}
+.stat-row b{font-family:"Courier New",monospace;font-size:16px;color:var(--accent);}
+
+.three-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;border-top:2px solid var(--ink);
+  padding-top:16px;margin-top:6px;}
+.story-block h3{font-size:20px;line-height:1.1;margin:0 0 4px;}
+.story-block .kicker{font-family:"Courier New",monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:4px;}
+.story-block p{font-size:13px;text-align:justify;margin:0 0 9px;}
+.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;border-top:2px solid var(--ink);padding-top:16px;margin-top:6px;}
+
+.pullquote{border-top:3px double var(--ink);border-bottom:3px double var(--ink);margin:22px 0 6px;padding:16px 30px;
+  text-align:center;}
+.pullquote p{font-family:"Bodoni 72","Didot",Georgia,serif;font-size:23px;font-style:italic;line-height:1.3;margin:0;}
+.pullquote .attr{font-family:"Courier New",monospace;font-size:11px;font-style:normal;letter-spacing:1px;
+  text-transform:uppercase;color:var(--accent);margin-top:10px;}
+
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+th,td{border:1px solid var(--rule);padding:6px 8px;text-align:left;vertical-align:top;}
+th{background:var(--ink);color:var(--paper);font-family:"Courier New",monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;}
+tbody tr:nth-child(even){background:var(--paper-shade);}
+.table-search{width:100%;padding:8px 10px;margin-top:14px;font-family:"Courier New",monospace;font-size:12px;
+  border:1px solid var(--ink);background:var(--paper);color:var(--ink);}
+.table-cap{font-family:"Courier New",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:14px;}
+
+.project-banner{border:2px solid var(--gold);background:linear-gradient(180deg,#f6efe0,#efe4c9);
+  padding:14px 20px;margin-bottom:18px;text-align:center;}
+.project-banner .kicker{font-family:"Courier New",monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);font-weight:bold;}
+.project-banner p{font-size:13.5px;margin:6px 0 0;font-style:italic;color:var(--ink-soft);}
+.ai-banner{background:linear-gradient(135deg,#141310,#2b2724);color:#efe8d6;padding:16px 22px;margin-bottom:18px;
+  border-radius:2px;text-align:center;}
+.ai-banner .kicker{font-family:"Courier New",monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);}
+.ai-banner p{margin:6px 0 0;font-style:italic;font-size:14px;color:#d8cfba;}
+.record-banner{border-left:5px solid var(--accent);background:var(--paper-shade);padding:10px 16px;margin:14px 0;
+  font-size:13px;}
+.record-banner b{color:var(--accent);}
+
+.colophon{border-top:3px double var(--ink);margin-top:26px;padding-top:14px;font-size:11px;color:var(--ink-soft);
+  font-family:"Courier New",monospace;line-height:1.6;}
+
+@media print{
+  body{background:#fff;}
+  .page-nav,.weatherbar{display:none;}
+  .page{display:block !important;page-break-after:always;}
+  .paper{box-shadow:none;max-width:100%;}
+}
+body.reading .lead-body{column-count:1;font-size:16px;}
+body.reading .three-cols{grid-template-columns:1fr;}
+body.reading .lead-grid{grid-template-columns:1fr;}
+@media(max-width:820px){
+  .lead-grid,.two-cols{grid-template-columns:1fr;}
+  .lead-body{column-count:1;}
+  .three-cols{grid-template-columns:1fr;}
+  .masthead h1{font-size:46px;}
+  .headline h2{font-size:28px;}
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="top-rule mono">
+      <span>Vol. I · No. 14</span>
+      <span>GoodDay Software · Internal Circulation</span>
+      <span>Price: One Index And Nine Hotfixes</span>
+    </div>
+    <h1>The GoodDay Gazette</h1>
+    <div class="tagline">"All the inventory that's fit to print."</div>
+    <div class="issue-line mono">
+      <span>Friday, August 14, 2026</span>
+      <span>Reporting Period: August 7 – August 13, 2026</span>
+      <span>Eight Pages</span>
+    </div>
+  </div>
+
+  <!-- WEATHER STRIP -->
+  <div class="weatherbar mono">
+    <span>🔧 <b>Forecast:</b> One index down, nine hotfixes out, one very long Thursday</span>
+    <span>🎫 <b>~213</b> Pylon tickets (down from 263)</span>
+    <span>⚙️ <b>10</b> prod deploys — <b>9</b> of them hotfixes</span>
+    <span>🔀 <b>91</b> PRs merged</span>
+    <span>📞 <b>66</b> MS-team calls</span>
+    <span>🏁 <b>Porte + Hall</b> live</span>
+  </div>
+
+  <!-- NAV -->
+  <nav class="page-nav" id="pageNav">
+    <button data-page="1" class="active">1 · Front</button>
+    <button data-page="2">2 · Sales</button>
+    <button data-page="3">3 · Partnerships</button>
+    <button data-page="4">4 · Merchant Success</button>
+    <button data-page="5">5 · Engineering</button>
+    <button data-page="6">6 · Product Project</button>
+    <button data-page="7">7 · AI Desk</button>
+    <button data-page="8">8 · Around GoodDay</button>
+    <span class="toolbar">
+      <a href="../archive.html" title="Browse back issues"><button>🗞 Archive</button></a>
+      <button id="readBtn" title="Toggle reading mode">Aa</button>
+      <button id="printBtn" title="Print issue">⎙ Print</button>
+    </span>
+  </nav>
+
+  <!-- ================= PAGE 1 — FRONT ================= -->
+  <section class="page active" id="p1">
+    <div class="section-flag"><span class="flag">The Front Page</span><span class="pageno mono">P.1 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">136 to Zero, and Then Thursday</div>
+      <h2>One Index Erased 136 Nightly Failures. Six Days Later, One Bad Instance Cost Ten Hours.</h2>
+      <div class="subhead">Rob Hatfield's recon fix held under prod verification. Then a single worker instance rejected every Trackstar call for half a day, five recons failed overnight, and Voice of the Merchant was cancelled outright.</div>
+      <div class="byline">By the Gazette Desk · Reporting August 7 – August 13, 2026</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>The week's best number came in on a Sunday morning. Rob Hatfield shipped an index on the integration-objects table as hotfix v0.140.12 on Friday afternoon, pointed an agent at the overnight crons, and posted the verification himself: in the identical 04:30–09:12 UTC window, recon query timeouts went from <b>136 to zero</b>. Channel-locations completed went from 35 to 112. Hill House Home — which had been silently failing since roughly July 10 and whose nightly sweep reads a 536,267-row slice across 168,986 distinct external IDs — ran all 22 of its channel-locations in 29 seconds, pulling 4,970 pending levels in 3.7. The Normal Brand finished in about four. "The missing store and POS adjustments have genuinely reappeared," Rob wrote. He also declined to call it settled, flagging that Poncho's expected adjustment batch never materialised.</p>
+        <p>That was the good half. The Friday before it, Dave Wardell had escalated the underlying scaling problem in #critical-support with unusual bluntness — the same nightly sweep was re-reading 157,770 pending inventory-level rows at The Normal Brand, 145,416 of them dated July 2025, and discarding roughly 95% of what it read. His unanswered question in that thread is the one worth keeping: does anything ever clean up that table? By his own account, no.</p>
+        <p>Then came Thursday, August 13. A single Cloud Run worker instance returned HTTP 403 on every Trackstar call it made for ten and a half hours while its siblings on the same revision worked fine — two merchants lost a day of WMS inventory freshness and two recons failed. Dave posted five overnight recon failures at 6:38 a.m., told Merchant Success at 7:18 that engineering was "broadly at your disposal today," and by 8:47 Hunter Leeming had cancelled Voice of the Merchant. Troy Lowe, holding air traffic control, closed the Trackstar ticket in two hours and seven minutes and shipped an ERD barcode hotfix the same afternoon.</p>
+        <p>The commercial side ran in the other direction. Porte + Hall went live Wednesday after a month of soft go-live, and Kyle Hency's invoicing review the same week called it the biggest contract the company has closed. Almina Concept and Alice Walk both signed. And Meagan Herfkens Hency put a chart in front of the go-to-market team showing average deal size in the pipeline running well ahead of anything closed to date (P.2).</p>
+      </div>
+      <div class="sidebar">
+        <h4>The Week by the Numbers</h4>
+        <div class="stat-row"><span>Recon timeouts, before → after</span><b>136→0</b></div>
+        <div class="stat-row"><span>Pylon tickets opened</span><b>~213</b></div>
+        <div class="stat-row"><span>Prod deploys</span><b>10</b></div>
+        <div class="stat-row"><span>— of which hotfixes</span><b>9</b></div>
+        <div class="stat-row"><span>PRs merged</span><b>91</b></div>
+        <div class="stat-row"><span>MS-team Gong calls</span><b>66</b></div>
+        <p style="margin-top:12px;font-size:12px;color:var(--ink-soft);">Ticket volume fell to ~213 (Pylon 9580–9792) from last issue's record ~263 — roughly 19% lighter. Deploys dropped from 15 to 10 for the third consecutive week, and nine of the ten were hotfixes.</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">Lead II · Paperwork</div>
+        <h3>One Unsigned Agreement, Three Blocked Integrations</h3>
+        <p>The obstacle in partnerships this week was not technical. LYSI has a price and a scope for the Orderful build, JOOR's technical lead has already read GoodDay's APIs, and Katana has a date — and all three are waiting on GoodDay's new partner agreement with API legal language to clear. Evan Smith named it plainly: "The hold up is on my side at the moment" (P.3).</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Lead III · Money Path</div>
+        <h3>Stripe Payments Settled and Vanished</h3>
+        <p>A buyer pays a pay-link, the money settles at Stripe, and GoodDay records nothing — no payment row, receivable never flips to Paid, webhook returns 200. Stripe removed the top-level invoice fields in its 2026-06 API and the handler returned null without complaint. Filed Tuesday, fixed Wednesday (P.5).</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Also Inside</div>
+        <h3>What Else Made the Paper</h3>
+        <p><b>Bogey Bros</b> built their own audit of GoodDay's API, MCP and CSV surfaces, hosted it, and handed it over. It found bugs other merchants had reported independently (P.6, P.7).</p>
+        <p><b>Ser Rekonalot</b> solved a merchant escalation with no playbook at all — and Dave Wardell drew a doctrine out of it (P.7).</p>
+        <p><b>Vishal Marocha and Troy Lowe</b> hit two and three years (P.8).</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p>"GD-12853 — the fix held. Timeouts 136 → 0. All six checkpoints fired. Every claim below is from prod logs I read tonight."</p>
+      <div class="attr">— Rob Hatfield, Sun Aug 9 · #critical-support</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 2 — SALES ================= -->
+  <section class="page" id="p2">
+    <div class="section-flag"><span class="flag">The Sales Desk</span><span class="pageno mono">P.2 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">Pipeline Report</div>
+      <h2>MeUndies Moves Three Times in a Week, and the Board Starts Punching Above Its History</h2>
+      <div class="subhead">An accounting demo, an eighty-seven-minute ops demo and a catered on-site in Culver City. Meanwhile the biggest contract in company history closes, two brands sign, and a wedding-registry problem becomes a qualification rule.</div>
+      <div class="byline">Sources: #sales-support, #go-to-market, Gong (Flatley, Hency) · 14 calls</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>MeUndies is now the deal the desk is organised around. It moved three times in seven days: a Friday accounting demo where SVP Controller Lance Ohira insisted on the full general-ledger integration being live at launch — Dave Wardell's honest answer was three-way match in a couple of months and full revenue-and-COGS posting to QuickBooks completing in Q1; an eighty-seven-minute Tuesday operations demo where Cynthia Kim volunteered that she had once wanted to work at GoodDay because it was the only ERP she had ever liked; and a Thursday on-site at their Culver City office, lunch catered, with the founder in the room. The numbers behind it: 25,000-plus SKUs run by a two-person ops team, roughly 85% of goods from a single overseas manufacturer, and a NetSuite contract dated August 2027. Kyle Hency's read on the buying committee is that Cynthia and general counsel Josh both want it and Lance is the person to convince. Decision targeted for the end of the quarter.</p>
+        <p>The demo everyone talked about afterwards was River Crawford's. One Claude prompt, spanning the Shopify MCP and the GoodDay MCP, created a product with a colour and a full size run, attached an image, and then wrote a fifty-unit-per-size purchase order to a vendor with an October ship-by date. Kyle's summary in #go-to-market: it "definitely bent some minds."</p>
+        <p>The quieter story is the shape of the board. Meagan Herfkens Hency posted an analysis Tuesday showing average deal size in the pipeline running significantly ahead of anything closed historically — "a great sign for us to bring customer size up." Kelley Flatley's reading was that the complexity follows the money: "A lot of these deals have felt quite complicated, channels, integrations, which makes sense if the deal size is up." Kyle spent the week enforcing hygiene to match — close dates and forecast categories mandatory on everything in discussion or proposal, Evan Smith pulled out of the inbound round robin, and a whole-team pipeline scrub booked for Thursday afternoon of the Austin on-site. "This clean is just too far overdue at this point."</p>
+      </div>
+      <div class="sidebar">
+        <h4>Closed &amp; Kicked Off</h4>
+        <ul>
+          <li><b>Porte + Hall</b> — closed and live; $7,200 implementation plus $2,000/mo, four consecutive 12-month terms.</li>
+          <li><b>Almina Concept</b> — signed; kickoff Wed Aug 12, go-live target 9/30.</li>
+          <li><b>Alice Walk</b> — signed after ~5 months; kickoff September, go-live post-holiday.</li>
+        </ul>
+        <h4>Slipping</h4>
+        <p style="font-size:12px;"><b>Ferrell</b> pushed to September — peak self-fulfilment season plus a SKU-structure blocker where style names sit in the SKU field and size lives only as a variant. <b>Untamed Petals</b> at risk on architecture versus price. Kelley on the legal season: "you know what combination people don't seem to like? Summer vacation + reviewing legal contracts!"</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">Compliance</div>
+        <h3>Dave Draws the Line on the La Ligne DPA</h3>
+        <p>Counsel came back with a heavy markup. Kelley posted a four-part redline analysis; Kyle called the comments "reasonably balanced and in the spirit of partnership." Dave's verdict on subprocessor consent was not: "We cannot have one merchant dictating how we deliver our solution." Backup deletion moves 90 days to 180, the security contact becomes a dedicated address, and the 72-hour clock runs from identification. Harish Chandramowli spun two tickets off the thread the same evening.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Qualification</div>
+        <h3>Wedding Registry Joins the Watch List</h3>
+        <p>Over The Moon's problems traced to a material registry business — and a custom Shopify app that deliberately makes on-hand inventory inaccurate. Kyle drew the parallel to Suitshop and set a rule: registry above 20% of the business goes on the watch list alongside retailers, with a second diligence pass on on-hand inventory. Meagan added baby-registry-heavy businesses to the same category.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Product Asks</div>
+        <h3>Every RLM Refugee Wants UPCs Assigned</h3>
+        <p>Kelley, Tuesday: brands coming off RLM keep pointing out it auto-assigns UPCs once they buy a GS1 block. "It's one of those things that keeps coming up and is just tedious, manual work." Dave's answer is that it gets easy once Items v2 runs through the APIs — likely a hackathon build in a couple of months. Harish's counter: make UPC an attribute with an allow list.</p>
+      </div>
+    </div>
+
+    <input class="table-search" data-target="salesTable" placeholder="Filter the sales call ledger… (brand, rep, type)">
+    <table id="salesTable">
+      <thead><tr><th>Date</th><th>Account</th><th>Rep</th><th>Len</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td>Aug 7</td><td>MeUndies — accounting</td><td>Flatley, Wardell</td><td>61m</td><td>Demo</td></tr>
+        <tr><td>Aug 10</td><td>Symmitri (Jonathan Poma)</td><td>Hency</td><td>57m</td><td>Vendor</td></tr>
+        <tr><td>Aug 10</td><td>Thousand — contract redline</td><td>Flatley</td><td>26m</td><td>Contract</td></tr>
+        <tr><td>Aug 10</td><td>Jiyu</td><td>Flatley + 4</td><td>73m</td><td>Deep Dive</td></tr>
+        <tr><td>Aug 11</td><td>MeUndies — operations</td><td>Flatley, Crawford</td><td>87m</td><td>Demo</td></tr>
+        <tr><td>Aug 11</td><td>House of Noa</td><td>Flatley, Crawford</td><td>44m</td><td>Demo</td></tr>
+        <tr><td>Aug 11</td><td>Diane von Furstenberg</td><td>Flatley, Crawford</td><td>64m</td><td>Deep Dive</td></tr>
+        <tr><td>Aug 11</td><td>Integrus — AR review</td><td>Hency, M. Wardell</td><td>35m</td><td>Internal</td></tr>
+        <tr><td>Aug 12</td><td>Almina Concept — kickoff</td><td>Flatley + MS</td><td>30m</td><td>Signed</td></tr>
+        <tr><td>Aug 12</td><td>Bird &amp; Be</td><td>Flatley, Crawford</td><td>64m</td><td>Discovery</td></tr>
+        <tr><td>Aug 12</td><td>Loop Returns (Chris Long)</td><td>Hency</td><td>8m</td><td>Partner</td></tr>
+        <tr><td>Aug 13</td><td>Scale 3PL — pipeline session</td><td>Hency</td><td>70m</td><td>Partner</td></tr>
+        <tr><td>Aug 13</td><td>My Neighbor's Co</td><td>Flatley</td><td>36m</td><td>Discovery</td></tr>
+        <tr><td>Aug 13</td><td>MeUndies — on-site</td><td>Hency, Crawford</td><td>67m</td><td>Executive</td></tr>
+      </tbody>
+    </table>
+    <div class="table-cap">All fourteen sales-rep calls in the window. Symmitri is an inbound vendor conversation, not a deal. Filter live above.</div>
+
+    <div class="pullquote">
+      <p>"2.4 markup is a non-starter for me. We cannot have one merchant dictating how we deliver our solution."</p>
+      <div class="attr">— Dave Wardell, Wed Aug 12 · #sales-support</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 3 — PARTNERSHIPS ================= -->
+  <section class="page" id="p3">
+    <div class="section-flag"><span class="flag">Partnerships</span><span class="pageno mono">P.3 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">Integrations &amp; Alliances</div>
+      <h2>Three Integrations, One Piece of Unsigned Paperwork</h2>
+      <div class="subhead">LYSI quotes the Orderful build at four to five thousand dollars. JOOR's engineer has already read the APIs. Katana has a date. All three are waiting on the same agreement — and Evan Smith says so out loud.</div>
+      <div class="byline">Sources: #partnerships, Gong (Smith) · ~23 messages, 8 partner calls</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>Orderful finally has a number. Ramesh Cooke of LYSI quoted Evan Smith four to five thousand dollars all-in for the one-time connector build plus per-document fees for the three EDI documents Margo needs, with a small annual maintenance component. The structure is a reusable connector: build it once, and each additional document afterwards runs a couple of hundred dollars until the full eight-series library is in. LYSI is a subcontractor to Orderful rather than a GoodDay vendor, so GoodDay contracts and pays Orderful. Margo is first, TomboyX is queued behind it. LYSI's engineers said the public API documentation and auth types were clear and had already identified the endpoints they need.</p>
+        <p>What they cannot get is a sandbox — because GoodDay's new partner agreement, the one carrying the API legal language, has not been signed. The same sentence explains JOOR, where the technical lead assigned this month has already scoped GoodDay's APIs and is waiting on the same access, and where Evan's answer on timing is that he expects a full workstream and date next week. Katana's own partner agreement is stuck in its own legal review. Three integrations, one document. Evan named it himself: "The hold up is on my side at the moment because they haven't signed our new agreement with our API legal language in there to give them access."</p>
+        <p>Katana at least has a real date. Richard Ainscough said Katana's direct API connection to Trackstar lands around August 17, and Evan put roughly two weeks on the GoodDay side after that — "mainly mapping POs and receipts." Ownership of the build is still open between the two teams. That answer matters because Katana sat at the top of Matt Pham's ranked delivery-date request from the previous week; of the five he listed, two now have real dates, one has a price, and two — Style Arcade and Ful Fill — went unmentioned entirely.</p>
+      </div>
+      <div class="sidebar">
+        <h4>Partner-Sourced Pipeline</h4>
+        <p style="font-size:12px;">Kyle asked for the numbers on Thursday and Evan had them back inside two hours. All-time:</p>
+        <ul>
+          <li><b>Scale 3PL</b> — 17 leads in, 5–6 closed won, 4 closed lost.</li>
+          <li><b>Southland Synergy</b> — 9 leads in; Cloth &amp; Paper and ERD won.</li>
+          <li><b>Crew Finance</b> — 19 leads in, 1 won against 9 lost, but 6 live deals now.</li>
+          <li><b>Outbound from GoodDay</b> — 3 to Scale, 1 to Crew Finance.</li>
+        </ul>
+        <p style="font-size:12px;">The imbalance is the story, and Evan flagged the tracking as incomplete: "Feel like there might be more but this is what is tracked in Hubspot."</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">Candour</div>
+        <h3>GoodDay Tells NLRP Why It Isn't Referring Them</h3>
+        <p>The most honest partner call of the week. Willy Husted described the SFTP file-transfer integration as brittle and said Trackstar being out of sync with NLRP accounts for something like 80 to 90 percent of GoodDay's WMS issues. Dave was blunt that GoodDay has not been referring clients despite rating NLRP's operations highly. Keith Krasney's response was to ask for a checklist he could take to his CEO and IT team, conceding his own IT team does not escalate. Willy is writing it.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Reach</div>
+        <h3>ShipBob Mails 7,000 Contacts</h3>
+        <p>Roughly an even split of ShipBob customers and prospects GoodDay flagged as good fits, sent Wednesday, UTM-tracked. The benchmark to beat: Ship Essential's send to 100 customers a few weeks back produced three leads. GoodDay is also the inaugural feature in ShipBob's new partner-spotlight newsletter, with reciprocal directory listings and account mapping down to a five-to-ten account shortlist. Bi-weekly calls start August 27.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Terms</div>
+        <h3>The Aggregate Co Converts</h3>
+        <p>Huyen Phan's follow-up ran forty-six minutes and ended with terms on the table both directions: GoodDay's standard 20% of first-year revenue paid across four quarters against The Aggregate Co's own 5% of monthly revenue for a year. Nine people across Sydney, Auckland and Brisbane; every client already on Shopify; incumbent ERPs NetSuite, Sage Intacct and Apparel 21. Evan's pitch: a $10M brand on NetSuite could cut roughly 80% of cost.</p>
+      </div>
+    </div>
+
+    <input class="table-search" data-target="partnerTable" placeholder="Filter the partner ledger… (partner, counterpart, topic)">
+    <table id="partnerTable">
+      <thead><tr><th>Date</th><th>Partner</th><th>Counterpart</th><th>Takeaway</th></tr></thead>
+      <tbody>
+        <tr><td>Aug 10</td><td>ShipHero</td><td>Shea Molitor, Brandon Whitfield</td><td>Ferrell blocked on Shopify SKU structure; fix routes through the NuOrder integration mapping UPC to GoodDay SKU. Both sides quote 6–8 weeks.</td></tr>
+        <tr><td>Aug 10</td><td>Katana</td><td>Richard Ainscough</td><td>Trackstar direct API ~Aug 17; GoodDay side ~2 weeks after. Build ownership open. Partner agreement stuck in legal.</td></tr>
+        <tr><td>Aug 10</td><td>ShipBob</td><td>Gareth Roberts</td><td>Two-year passive partnership formalised; 7,000-contact send; inaugural newsletter spotlight; bi-weekly from Aug 27.</td></tr>
+        <tr><td>Aug 11</td><td>Toolio</td><td>Kyle Wagner</td><td>Consultancy-led concurrent implementations proposed; GoodDay expects an outsourced implementation model within ~6 months. Evan hands Toolio the RLM migration wave.</td></tr>
+        <tr><td>Aug 11</td><td>The Aggregate Co</td><td>Huyen Phan</td><td>Terms exchanged: GoodDay 20% of year one quarterly; Aggregate 5% monthly for a year. All clients on Shopify.</td></tr>
+        <tr><td>Aug 12</td><td>DTConnect</td><td>Emma Fredwall, Max</td><td>River onboarded to the platform; Kelley wants curated short lists rather than the full feed. Pit Viper next week, Lalina in legal.</td></tr>
+        <tr><td>Aug 13</td><td>LYSI / Orderful</td><td>Ramesh Cooke + 2</td><td>$4,000–$5,000 one-time connector for Margo's three EDI documents; reusable, ~$200 per additional document. Blocked on the API agreement and sandbox.</td></tr>
+        <tr><td>Aug 13</td><td>NLRP</td><td>Keith Krasney</td><td>Told directly it is GoodDay's toughest integration and the reason for no referrals. Ask: a REST API. Keith wants an exec-level checklist.</td></tr>
+      </tbody>
+    </table>
+    <div class="table-cap">Eight partner conversations in the window. Evan also sat three merchant calls and the weekly onboarding standup. Filter live above.</div>
+
+    <div class="pullquote">
+      <p>"The hold up is on my side at the moment because they haven't signed our new agreement with our API legal language in there to give them access."</p>
+      <div class="attr">— Evan Smith, Thu Aug 13 · #partnerships</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 4 — MERCHANT SUCCESS ================= -->
+  <section class="page" id="p4">
+    <div class="section-flag"><span class="flag">Merchant Success</span><span class="pageno mono">P.4 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">The Onboarding Beat</div>
+      <h2>Porte + Hall Crosses, and Thursday Morning Eats the Calendar</h2>
+      <div class="subhead">Five recon failures overnight, engineering loaned wholesale to Merchant Success, and Voice of the Merchant cancelled by 8:47. Underneath it: a 3,200-row lot file that turned out 98% wrong, and 77 items nobody can un-kit.</div>
+      <div class="byline">Sources: #merchant-success, #sers-tavern, Pylon, Gong (MS team) · 66 calls</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>Porte + Hall went live Wednesday evening after a month of soft go-live, with Hunter Leeming calling out River Crawford's early work as the reason it landed. The Thursday debrief set the cleanup: backdate July and August receipts to the Deposco import dates to clear the valuation discrepancies, daily warehouse recon against weekly Shopify recon, and a written playbook for negative inventory and variance. Hunter spent Wednesday pulling all twenty-one purchase order, block and receipt combinations for the merchant out of Ser Rekonalot and iterating them three times into a corrective CSV.</p>
+        <p>Thursday morning is what the week will be remembered for. Dave Wardell posted five overnight recon failures at 6:38, escalated to "tons of failures" by 7:01, and at 7:18 told the Merchant Success group that the engineering team would be broadly at their disposal for the day — partly because of recon and partly because Ten Thousand was pulling in Hunter and Tim Kauer. Hunter cancelled Voice of the Merchant at 8:47 with a one-line note asking people to post urgent requests in channel instead. Seth Horton, who had built an automation to draft Linear tickets off the VOTM recording and had been planning to walk the team through it on that very call, ended up announcing it in Slack instead — and got a same-hour correction from Dave about which Linear team those tickets should land in.</p>
+        <p>The Ten Thousand problem was a good example of effort meeting bad data. Jackie at the merchant was trying to update lot realisation dates across more than 3,200 SKU-and-lot combinations. David Ortiz got Ser to reverse-engineer the CSV path, Vishal Marocha confirmed it and tested successfully in the GoodDay production store, David published a knowledge-base article and Dave filed a ticket to drop the channel and location requirement. Then it failed against the merchant's real file. David's postscript: "her data was 98% inaccurate so nothing we can do anyways."</p>
+        <p>Prepared Hero produced the sharper bug. Seventy-seven items were wrongly classified as virtual kits, blocking them from inventory reconciliation — and the CSV update path silently drops item type, so the upload reported success and changed nothing. The user interface refuses to help either: you cannot remove the last component from a virtual kit. David disproved Ser's suggested workaround himself, Ser conceded, and Troy took the fix.</p>
+      </div>
+      <div class="sidebar">
+        <h4>Pylon Snapshot</h4>
+        <div class="stat-row"><span>Opened in window</span><b>~213</b></div>
+        <div class="stat-row"><span>Issue range</span><b>9580–9792</b></div>
+        <div class="stat-row"><span>Prior week (record)</span><b>~263</b></div>
+        <p style="font-size:12px;margin-top:8px;">Down roughly 19% off last issue's record. The tool does not expose account names, so no merchant volume ranking is published this week. The first ticket of the window was titled "Inventory Source of Truth Transition Kudos"; three more were straight thank-you notes.</p>
+        <h4>Dates on the Board</h4>
+        <ul>
+          <li><b>Aug 17–18</b> — Troubadour Goods, hard deadline</li>
+          <li><b>Aug 17</b> — Made Hoops DTC from AMS</li>
+          <li><b>~Aug 25</b> — Equip Foods, DCL-gated</li>
+          <li><b>Aug 25–27</b> — Sarah Flint</li>
+          <li><b>Sep 9</b> — ERD</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">Registry Problem</div>
+        <h3>Over The Moon: 99 Committed, 5 Real</h3>
+        <p>Bergen's registry app tags unaccepted registry orders as waiting for action; Bergen ignores them, so Shopify shows units committed that Bergen never sees and then pushes its own on-hand back into available. Seth's worked example: Bergen holding 129 with 5 committed, GoodDay showing 134, Shopify showing 99 committed. "This is across a majority of their catalog, not one SKU. That's why I killed the sync." The fix under discussion is a secondary Shopify location plus Shopify Flow, built with the merchant's own developer.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Self-Inflicted</div>
+        <h3>ERD Duplicates Thousands of SKUs</h3>
+        <p>Two weeks before go-live. Matt Pham's account: "they said they were happy with the SKUs in Shopify and GD and then the next day duplicated thousands of them lol." About half now carry live business relationships, so Troy is scoping cascade soft-delete scripts. Separately a barcode printed BLACK / 27 where it should have read BLACK / S — purchase orders read item attributes, barcodes read dimension values, and the size dimension held only numeric waist values. Hotfixed the same day.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Same-Day Fix</div>
+        <h3>SaunaBox Presales, Unstuck</h3>
+        <p>Orders allocated but never submitted to the warehouse, with the presales fulfilment hold never releasing. Ser traced the stall; Noel Klein found the actual cause — empty billing-address mappings meant Trackstar rejected the push. He shipped a guarded configuration fix with an audit row and a written rollback, scoped the ship-date fields to Wholesale, and reported back that all stuck presale orders had gone through.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:26px;margin:26px 0 4px;border-top:2px solid var(--ink);padding-top:16px;">From The Sers Tavern · Merchant Triage</h3>
+    <div class="lead-grid" style="margin-top:12px;">
+      <div class="lead-body single">
+        <p><b>The Channel The Team Uses To Diagnose, In One Pass.</b> Fifty-six triage threads and around 538 messages — the busiest week the channel has had. The pattern that keeps recurring: the agent produces a fast, plausible root cause, a human pushes back with specifics, and the corrected answer is the one that ships.</p>
+        <p><b>Halfdays' recon hit the wrong channel.</b> Thirty-nine replies, the largest thread of the week. An adjustment covering 22 SKUs landed on Wholesale instead of eCommerce. Ser got it wrong twice and said so twice, the second time opening with "Corrections accepted — here's what the code actually says, replacing all the wrong reasoning from earlier." Its own data killed the leading theory: nine of the 22 SKUs genuinely had zero eCommerce on-hand, but thirteen had large positive balances and nothing committed. Troy Lowe's verdict was to start again elsewhere — "I think I'll move this investigation to a local oncall agent without Ser's contextual baggage in play" — and his local run found it: the channel-priority configuration for the merchant maps internal channel IDs to the wrong names, probably set years ago.</p>
+        <p><b>Ten Thousand's ninety duplicate parents.</b> Matt Wardell's upload kept tripping OneSchema's validator. Ser found 110 active duplicate parent-item rows on the merchant — 90 titled "Interval Short," 20 "Interval Short Liner" — so each SKU's stored parent ID pointed somewhere different. James Hargett and Troy walked him to the Items v2 filtered download, which worked in the parent view but not in the inventory view or the purchase-order export, because some queries still pull v1 parent names.</p>
+        <p><b>American Tall's export, stuck for 8,344 minutes.</b> Ser traced a single pending message stranded in a delivered state since the previous Thursday evening, then went further into the logs and attributed it to worker saturation — the queue was returning "no available instance" two minutes before a 110-column filtered purchase-order export was submitted. Dave's read in-thread was the same: leftover from the pending-message processing problems five days earlier.</p>
+        <p><b>Oliver Cabell's 403.</b> Ser guessed expired credentials at 55% confidence. Matt Wardell cross-checked with Macroscope, which confirmed the failure from the logs with integration ID, order reference and exact timestamps — and correctly softened the conclusion, noting it could equally be account permissions, warehouse access or token scope. It recommended verifying access to the specific warehouse.</p>
+        <p><b>And a correction worth keeping.</b> When Matt raised Minnow orders not reaching Blubox, James Hargett stopped the thread: "he's talking about direct-to-consumer orders and GoodDay does not sit in the critical path for those. Ser will not be able to help you with requests around order flow for direct-to-consumer volume."</p>
+      </div>
+      <div class="sidebar">
+        <h4>Threads Started</h4>
+        <div class="stat-row"><span>Matt Wardell</span><b>12</b></div>
+        <div class="stat-row"><span>Seth Horton</span><b>7</b></div>
+        <div class="stat-row"><span>Matt Pham</span><b>7</b></div>
+        <div class="stat-row"><span>Tim Kauer</span><b>5</b></div>
+        <div class="stat-row"><span>Scott Meadows</span><b>5</b></div>
+        <div class="stat-row"><span>David Ortiz</span><b>5</b></div>
+        <div class="stat-row"><span>Hunter Leeming</span><b>4</b></div>
+        <div class="stat-row"><span>Dave Wardell</span><b>2</b></div>
+        <div class="stat-row"><span>River Crawford</span><b>2</b></div>
+        <div class="stat-row"><span>James Hargett</span><b>0</b></div>
+        <p style="font-size:12px;margin-top:10px;">Fifty-six top-level threads, ~538 messages. James worked in #merchant-success instead. Ser's weekly roast singled out David Ortiz at 17,689 tokens per question and Seth Horton for firing off 41 of them.</p>
+      </div>
+    </div>
+
+    <input class="table-search" data-target="msTable" placeholder="Filter the merchant call ledger… (merchant, MSM, type)">
+    <table id="msTable">
+      <thead><tr><th>Date</th><th>Merchant</th><th>GoodDay</th><th>Type</th><th>Takeaway</th></tr></thead>
+      <tbody>
+        <tr><td>Aug 7</td><td>Over The Moon</td><td>Horton</td><td>Hypercare</td><td>Registry commitments inflating Shopify; sync disabled</td></tr>
+        <tr><td>Aug 7</td><td>Minnow</td><td>Leeming</td><td>Debrief</td><td>Inventory import clean; on-hand and FOB costs next</td></tr>
+        <tr><td>Aug 7</td><td>Fleur du Mal</td><td>Hargett</td><td>Discovery</td><td>Wholesale ATS visibility, EDI, landed-cost accounting</td></tr>
+        <tr><td>Aug 7</td><td>Prepared Hero (MCP)</td><td>Pham</td><td>Beta</td><td>Close time cut from two weeks to Wednesday</td></tr>
+        <tr><td>Aug 10</td><td>Porte + Hall</td><td>Leeming</td><td>Weekly</td><td>GoodDay to become source of truth Wednesday</td></tr>
+        <tr><td>Aug 10</td><td>Saint Art NY</td><td>Crawford + 3</td><td>Kickoff</td><td>DTC fulfilment in-house; data timeliness is critical path</td></tr>
+        <tr><td>Aug 10</td><td>Guizio</td><td>Pham, Horton</td><td>Weekly</td><td>Bergen and RLM inventory discrepancies; clean legacy data</td></tr>
+        <tr><td>Aug 11</td><td>Lola Blankets</td><td>Leeming, Kauer, Klein</td><td>Weekly</td><td>Negative lots resolved; NuOrder routing slips to hotfix</td></tr>
+        <tr><td>Aug 11</td><td>Over The Moon</td><td>Leeming, Horton</td><td>Follow-up</td><td>Secondary Shopify location for unconfirmed registry orders</td></tr>
+        <tr><td>Aug 11</td><td>Burlebo</td><td>Hargett, Hency</td><td>Monthly</td><td>Heavy MCP adoption; previewing real-time gross profit</td></tr>
+        <tr><td>Aug 12</td><td>Cloth &amp; Paper</td><td>Horton</td><td>Recon sync</td><td>Shopify as source of truth; push stays off</td></tr>
+        <tr><td>Aug 12</td><td>Canopy — BOM sign-off</td><td>Ortiz, Wardell</td><td>Milestone</td><td>Aroma-bottle BOMs and decoration workflow agreed</td></tr>
+        <tr><td>Aug 12</td><td>Hollow Socks</td><td>Hargett</td><td>Reset</td><td>Inaccurate vendor packing lists are the real root cause</td></tr>
+        <tr><td>Aug 12</td><td>Salt Gypsy</td><td>Hargett, Pham</td><td>Discovery</td><td>Multi-location fulfilment, cross-docking, wholesale EDI</td></tr>
+        <tr><td>Aug 13</td><td>Prepared Hero</td><td>Ortiz, Pham</td><td>Weekly</td><td>Convert virtual kits back to items for recon</td></tr>
+        <tr><td>Aug 13</td><td>Guizio ↔ Bergen</td><td>Pham, Horton</td><td>Integration</td><td>Eliminate RLM as intermediary; GoodDay as source of truth</td></tr>
+        <tr><td>Aug 13</td><td>Troubadour Goods</td><td>Hargett, Kauer, Leeming</td><td>Go-live</td><td>Hard deadline Aug 17–18; Brian Kennedy departing</td></tr>
+        <tr><td>Aug 13</td><td>Porte + Hall</td><td>Leeming</td><td>Debrief</td><td>Backdate receipts; daily warehouse recon</td></tr>
+      </tbody>
+    </table>
+    <div class="table-cap">Eighteen of the sixty-six Merchant Success calls in the window. Filter live above.</div>
+
+    <div class="pullquote">
+      <p>"Still digging into recon. Eng team will be broadly at your disposal today as needed to help work through things."</p>
+      <div class="attr">— Dave Wardell, Thu Aug 13 · #merchant-success</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 5 — ENGINEERING ================= -->
+  <section class="page" id="p5">
+    <div class="section-flag"><span class="flag">Engineering</span><span class="pageno mono">P.5 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">The Ship Log</div>
+      <h2>Nine Hotfixes, One Very Good Index, and a Payment Path That Silently Swallowed Money</h2>
+      <div class="subhead">Troy Lowe takes air traffic control and closes a ten-hour outage in two hours. Refunds were posting contra-revenue twice. And a single unenforced sentinel let a merchant token reach a staff-only ledger handler.</div>
+      <div class="byline">Sources: #engineering, #critical-support, #product-support, Linear</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>Ten production deploys, nine of them hotfixes, v0.140.12 through v0.141.8. Vishal Marocha cut four release branches, Troy Lowe three, Rob Hatfield, Noel Klein and Sai Ancha one each. Every single deploy carried a yellow schema-drift flag, and every release left a backport pending — the trailing counts ran from one commit to thirteen. Workweave's week in review put PRs merged at 91, down 25%, with the feature-to-bug effort split at roughly 52 to 40. That is a defensible summary of the week: it went on incidents, not features.</p>
+        <p>The headline fix was Rob's, and it is documented better than anything the Gazette has covered. The legacy reconciliation query had been dying since mid-July; the index shipped Friday afternoon and by Sunday morning he had prod-log verification that timeouts had gone from 136 to zero and completed channel-locations from 35 to 112. The measured improvement on the underlying query was better than his own estimate — an unfiltered variant that took between 28 and 71 seconds ran in 812 milliseconds once status-filtered.</p>
+        <p>The week's most alarming find had nothing to do with inventory. On Tuesday, Ashwin Pai's ticket described a silent money-path failure: a buyer pays a payment link, the money settles at Stripe, and GoodDay records nothing — no payment row is written, the receivable never flips to Paid, and the webhook returns a cheerful 200. Stripe removed the top-level invoice payment-intent and charge fields in its June 2026 API version, and the conversion function returned null without raising anything. Filed Tuesday, closed Wednesday afternoon.</p>
+        <p>Close behind it, a security ticket that sat too long. Nine ops-script controllers resolve their audit actor without asserting the ops-token sentinel, so a merchant session token can reach a staff-only, ledger-mutating handler with an attacker-supplied merchant ID in the request body — confirmed exploitable in tests. Rob found it while reviewing an unrelated pull request on August 7 and flagged in his own handoff that it arrived during his shift and he never got to it. Troy closed it five days later.</p>
+      </div>
+      <div class="sidebar">
+        <h4>Ship Metrics</h4>
+        <div class="stat-row"><span>Prod deploys</span><b>10</b></div>
+        <div class="stat-row"><span>Hotfix share</span><b>9/10</b></div>
+        <div class="stat-row"><span>Version range</span><b>140.12→141.8</b></div>
+        <div class="stat-row"><span>PRs merged</span><b>91</b></div>
+        <div class="stat-row"><span>Change vs prior wk</span><b>−25.2%</b></div>
+        <div class="stat-row"><span>Schema drift green</span><b>0/10</b></div>
+        <p style="font-size:12px;margin-top:10px;">Workweave top contributors for Aug 4–10: Vishal Marocha 209.5, Troy Lowe 119.7, Kevin Samoei 76.7, Rob Hatfield 72.2, Noel Klein 42.8. Rob does not appear in the top three but cut the week's highest-leverage fix.</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">Accounting</div>
+        <h3>A $110 Refund Booked $220</h3>
+        <p>Vishal shipped four revenue-ledger releases in thirty-two hours. The headline defect: contra-revenue was being recorded twice on refunds. The same release corrected tax and shipping refund legs routing to receivables instead of cash clearing, fixed sign flattening on refund discrepancies, and removed a feature flag that had never been switched on — making Shopify fulfilment-cancellation reversal live for the first time. An earlier release carried nine separate corrections and a medium-risk index migration on a ~348,000-row table, deployed off-peak by design.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Blast Radius</div>
+        <h3>One Instance, Ten and a Half Hours</h3>
+        <p>A single worker instance returned 403 on every Trackstar call from 04:52 to 15:23 UTC while siblings on the same revision succeeded and Trackstar itself was healthy. It kept consuming messages the whole time, so everything routed to it failed. At least two merchants lost a day of inventory freshness. Willy Husted raised it at 09:13, Troy closed it at 11:40 — but the follow-up ticket is the real one: alert when a single instance fails essentially all of its calls to an external API.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Tooling</div>
+        <h3>pnpm scenario</h3>
+        <p>Willy introduced a way to stage a concrete business situation in a local development database — a failed WMS push for a given merchant, say — reusing the same builders the integration tests use so the recipes don't rot as the schema moves. Additive only, merchant flag required, local database enforced. "The payoff is that every repro someone stages by hand becomes a reusable, parameterized recipe." A Claude skill is wired to the same runner.</p>
+      </div>
+    </div>
+
+    <input class="table-search" data-target="incidentTable" placeholder="Filter the incident ledger… (merchant, symptom, ticket)">
+    <table id="incidentTable">
+      <thead><tr><th>Date</th><th>Merchant / System</th><th>Symptom</th><th>Resolution</th><th>Ticket</th></tr></thead>
+      <tbody>
+        <tr><td>Aug 7</td><td>TomboyX</td><td>Duplicated Shopify pages bound wrong SKUs to wrong parents</td><td>Closed same day, ~2 hours</td><td>GD-13035</td></tr>
+        <tr><td>Aug 7</td><td>Ten Thousand — CSV import</td><td>9,110 mapped values silently discarded; import reported success</td><td>Open</td><td>GD-13032</td></tr>
+        <tr><td>Aug 7–8</td><td>The Normal Brand, then Hill House Home</td><td>Recon failure two nights running; pending messages overloaded</td><td>Index shipped v0.140.12; verified 136→0 on Aug 9</td><td>GD-12853</td></tr>
+        <tr><td>Aug 7</td><td>Margaux</td><td>200+ POs created in USD instead of EUR</td><td>Cause was the importer re-stamping currency, not the vendor record</td><td>GD-13016</td></tr>
+        <tr><td>Aug 9</td><td>Kenny Flowers</td><td>Transfer left phantom committed stock on 25 SKUs, untouched 4 days</td><td>Closed Aug 10</td><td>GD-13013</td></tr>
+        <tr><td>Aug 10</td><td>87 merchants (retro-filed)</td><td>Scheduled jobs silently dropped when job-run quota exhausted</td><td>Still in progress</td><td>GD-12634</td></tr>
+        <tr><td>Aug 10</td><td>Platform — ops-script controllers</td><td>Merchant session token reaches staff-only ledger handler</td><td>Closed Aug 12, five days after filing</td><td>GD-13049</td></tr>
+        <tr><td>Aug 11</td><td>Stripe — all merchants</td><td>Payment settles at Stripe, nothing recorded; webhook returns 200</td><td>Closed Aug 12</td><td>GD-13171</td></tr>
+        <tr><td>Aug 12</td><td>App Engine — all stores</td><td>GCP error page mid-merchant-call; two of three instances failing health checks</td><td>Self-healed in ~4 minutes</td><td>—</td></tr>
+        <tr><td>Aug 13</td><td>Trackstar — 2+ merchants</td><td>One instance 403s every call for 10h31m</td><td>Closed same day in ~2h07m; alerting gap tracked</td><td>GD-13293</td></tr>
+        <tr><td>Aug 13</td><td>Prepared Hero</td><td>77 items stuck as virtual kits; CSV update reports success, changes nothing</td><td>Troy took it same afternoon</td><td>GD-13321</td></tr>
+        <tr><td>Aug 13</td><td>ERD</td><td>Barcode prints BLACK / 27 instead of BLACK / S</td><td>Hotfixed ~4.5 hours; shipped v0.141.8</td><td>GD-13297</td></tr>
+        <tr><td>Aug 13</td><td>Oliver Cabell — NuOrder</td><td>ATP present in GoodDay, absent in NuOrder; re-pushes ineffective</td><td>Handed Troy to Vishal mid-investigation; closed</td><td>GD-13316</td></tr>
+      </tbody>
+    </table>
+    <div class="table-cap">Thirteen incidents from #critical-support and #engineering. Poncho's Loop returns: two of five classes closed this week, the 228-order headline still open. Filter live above.</div>
+
+    <div class="pullquote">
+      <p>"I seriously said this to my agent today. 'If you're going to tell me I'm wrong, make sure you're right.' I feel like I'm fighting with a teenager."</p>
+      <div class="attr">— Rob Hatfield, Tue Aug 11 · #engineering</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 6 — PRODUCT PROJECT ================= -->
+  <section class="page" id="p6">
+    <div class="section-flag"><span class="flag">Product Project</span><span class="pageno mono">P.6 · Vol. I No. 14</span></div>
+
+    <div class="project-banner">
+      <div class="kicker">Seven of Ten Project Channels Active</div>
+      <p>Item Management · WMS · Returns Management · Accounting Initiative · BI &amp; Data Warehouse · Order Mgmt · Improved Error Handling</p>
+    </div>
+
+    <div class="headline">
+      <div class="kicker">The Project Desk</div>
+      <h2>Three Teams, One Week, the Same Conclusion: Stop Patching Per Surface</h2>
+      <div class="subhead">Items defines a container-only field set so the API, MCP and UI cannot diverge. WMS replaces per-merchant counters with one positions table. And BI folds three parity backlogs into a single tracker — built, initially, by a merchant.</div>
+      <div class="byline">Sources: 10 project channels · 7 active, 3 quiet</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>Item Management was the centre of gravity, and it ended the week with a strategic turn. Scott Meadows spent Friday through Monday proving out why item page headers still render fields that ought to be gone, and Troy Lowe explained the v1-to-v2 reversal as deliberate backward compatibility. Scott then hit a genuine bug — v2 parents receive Shopify webhooks but do not render as connected — and by Thursday had escalated the whole approach in standup: rather than hiding incompatible fields on the frontend, define one container-only field set so the API, MCP and interface all agree. His argument, verbatim: "You shouldn't be able to do something in the MCP/AI that we're blocking in the UI, like editing a price on a parent." Dave Wardell closed the week by calling a meeting between Kevin Samoei and Scott with four goals — tighten the parent-items, dimensions and attributes APIs with fast prototyping, release the public API, finish Items v2 focused on API, CSV and MCP, and rip out parent items v1 entirely.</p>
+        <p>The migration census that started it is worth its own paragraph. Troy asked how many merchants remain on Items v1; Ser's first answer named three production merchants and surfaced Ten Thousand as an unflagged straggler. James Hargett pushed back with specific missing names, Ser found its own filter had been requiring an onboarding flag that excluded every pre-inventory-management merchant, and returned a much longer list plus a fourth live merchant. James migrated The Normal Brand on Monday.</p>
+        <p>In WMS the same instinct produced the week's most vivid engineering note. Willy Husted's Tuesday roundup replaced a per-merchant receipt-numbering race — roughly ten to twelve collisions a day — with a standardised positions table, receipts first and fulfilments after, and flagged a third issue found along the way: workers acknowledge messages before processing them, so a mid-flight death silently loses data after partial writes. On the Margaux receiving incident that prompted it, he wrote that the fix "closes the bug that blocked Margaux's receiving for three days and came within one lucky webhook of silently double-counting inventory."</p>
+      </div>
+      <div class="sidebar">
+        <h4>Channel Traffic</h4>
+        <div class="stat-row"><span>Item Management</span><b>~72</b></div>
+        <div class="stat-row"><span>WMS</span><b>~30</b></div>
+        <div class="stat-row"><span>Returns Mgmt</span><b>17</b></div>
+        <div class="stat-row"><span>Accounting</span><b>15</b></div>
+        <div class="stat-row"><span>BI &amp; Data Warehouse</span><b>15</b></div>
+        <div class="stat-row"><span>Order Mgmt</span><b>9</b></div>
+        <div class="stat-row"><span>Error Handling</span><b>6</b></div>
+        <p style="font-size:12px;margin-top:10px;">Messages including thread replies. #project-csv-imports (no human activity), #project-retail-pos and #project-ag-grid recorded nothing in the window and are omitted from this page.</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">BI &amp; Data Warehouse</div>
+        <h3>The Merchant Who Audited Us</h3>
+        <p>Bogey Bros built their own comparison of GoodDay's API, MCP and CSV surfaces, hosted it, and handed over the link. Ashwin Pai reviewed it the same afternoon and turned it into a parity tracker, noting substantial overlap with issues other merchants had reported independently — "good news maybe?" Dave asked for a plain-language summary to send back. Alongside it, two purchase-order date fields were formally adjudicated: one deprecated, the other outright dead, proven by zero non-null values across 23,696 lines at Eby.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Accounting</div>
+        <h3>A Same-Day Replay</h3>
+        <p>David Ortiz surfaced Prepared Hero SKUs from a flash sale with no matching Shopify variants. Dave asked Vishal to replay the revenue events while skipping cost of goods; Vishal ticketed it at one point, ran it that evening, and reported success with no COGS posted — correct, since those units never entered the inventory ledger. Closed the same night. Separately Dave opened a proposal to stamp a static daily exchange rate at order creation, driven by Amazon FBA but equally needed for second storefronts like Paka's Peru store.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Returns &amp; Errors</div>
+        <h3>Flags That Notify Nobody</h3>
+        <p>Asked where return flags surface, Ser mapped the whole surface: they appear on the return detail page and the flagged tab, do not bubble up to sales orders, and trigger no notification of any kind — no workflow, no email, no Slack. Trackstar-sourced returns are excluded from auto-flag scans entirely. Meanwhile the error-handling project logged its cleanest ticket in weeks: integration error cards show a raw ID, so nobody can tell which purchase order block actually failed. Dave: "100% agree."</p>
+      </div>
+    </div>
+
+    <div class="record-banner">
+      <b>Channel discipline:</b> on Thursday Dave Wardell corrected support posts in both #project-wms and #project-order-mgmt within an hour of each other, told Vishal not to work one of the escalations, and restated the rule — project channels are for product requests and feedback, support goes to the support channels unless a project is in explicit live rollout. "It has been laid out and standardized. Support issues go to support channels. Nothing new about that process." Both posters acknowledged and refiled.
+    </div>
+
+    <div class="pullquote">
+      <p>"It closes the bug that blocked Margaux's receiving for three days and came within one lucky webhook of silently double-counting inventory."</p>
+      <div class="attr">— Willy Husted, Tue Aug 11 · #project-wms</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 7 — AI DESK ================= -->
+  <section class="page" id="p7">
+    <div class="section-flag"><span class="flag">The AI Desk</span><span class="pageno mono">P.7 · Vol. I No. 14</span></div>
+
+    <div class="ai-banner">
+      <div class="kicker">Ser Rekonalot · Macroscope · Olivia · Pipeline</div>
+      <p>The week an agent solved a live escalation with no playbook — and leadership decided that was the point.</p>
+    </div>
+
+    <div class="headline">
+      <div class="kicker">Agents &amp; MCP</div>
+      <h2>"No Playbook or Skill for This One — Pure Synthesis From Four Sources"</h2>
+      <div class="subhead">Ser Rekonalot read a merchant's CSV, spotted the blank column, queried the database for the valid options and recommended the simpler fix. Dave Wardell asked it to explain itself, then drew an architectural conclusion from the answer.</div>
+      <div class="byline">Sources: #project-ai, #mcp-launch-skills, agent threads</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>The moment came inside Thursday's Ten Thousand escalation. Handed a 240-kilobyte lot-adjustment file, Ser noticed that the required channel column was blank on every row, queried the database to establish that the merchant's location has exactly two channels, and recommended filling one down the column with the other as a row-level fallback. Twenty-seven seconds, thirty-eight cents. Dave Wardell's reaction — "Impressive, honestly the exact same thing I would have said" — was followed by a request that the agent explain how it got there. Ser's answer opened with the line that became the week's headline, then laid out the chain: read the file, spot the blank, query the database for valid options, cross-reference code behaviour, recommend the simpler of two options. "No runbook needed — the reasoning chain was short enough to run inline."</p>
+        <p>Dave forwarded it into #project-ai with a doctrine attached: this is why systems should be governed by primitives, context and reinforcement loops rather than playbooks and runbooks that go stale — and a note to Willy, Harish, Sai and Noel that it should shape the WMS integration skills and Ser's triage capability as they get built out. The tension worth recording is that the same week's remediation for a different Ser failure was, precisely, to add a playbook.</p>
+        <p>Because the quality work has not moved. The ticket describing Ser presenting inferred root causes as verified fact sits in draft, assigned to Ser Rekonalot itself, untouched since the day it was created a week ago. The ticket asking Ser to distinguish GoodDay Sheets from the data warehouse from Sigma is still in triage. The Ser V3 project has not been updated in Linear since late July. And three of Ser's answers in the lot-date thread carried thumbs-down reactions alongside the thumbs-up — visible dissent, in channel, on output quality.</p>
+        <p>Roughly eleven timed Ser runs surfaced this week, totalling something near eleven dollars, with runtimes from twenty-six seconds to just under fifteen minutes and self-reported confidence between 78 and 97 percent. Three of the biggest answers carried an "unverified" badge. Ser is also now writing code: Harish asked it to open a pull request with a Terraform change on Wednesday.</p>
+      </div>
+      <div class="sidebar">
+        <h4>Ser Telemetry, ~11 Runs</h4>
+        <div class="stat-row"><span>Approx. total cost</span><b>~$11</b></div>
+        <div class="stat-row"><span>Fastest</span><b>26.3s</b></div>
+        <div class="stat-row"><span>Slowest</span><b>14m56s</b></div>
+        <div class="stat-row"><span>Most expensive run</span><b>$3.66</b></div>
+        <div class="stat-row"><span>Confidence range</span><b>78–97%</b></div>
+        <p style="font-size:12px;margin-top:10px;">The costliest single run — 17.8k tokens over fifteen minutes — was the Ten Thousand duplicate parent-items diagnosis that found 110 active duplicate rows. Totals are aggregated from individually stamped runs, so treat them as approximate.</p>
+      </div>
+    </div>
+
+    <div class="three-cols">
+      <div class="story-block">
+        <div class="kicker">MCP</div>
+        <h3>The Frontier Is Read to Write</h3>
+        <p>Harish's snapshot on Thursday: customers are using write for creating and splitting purchase orders; those creating sales orders keep reporting API gaps; transfer and adjustment tools exist but nobody appears to be using them. Kenny Flowers asked for write access and got it the same evening. Dave's caution came earlier in the week — adjustments are the real risk for overstating inventory if MCP is wrong. Matt Pham's framing: "with more power comes greater responsibility lol."</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Field Report</div>
+        <h3>Prepared Hero Replaced an Accountant</h3>
+        <p>Dave Devine took over from a departed senior accountant using Claude, and cut close time from two weeks to Wednesday, with forecasting done by day five. MCP surfaced missing locations and negative unit costs his ops team had not caught since go-live. His ask: automate invoice creation from fulfilled sales orders — there is a backlog of roughly 400. He is deliberately held read-only for a week or two, after a prior case where MCP read "available" as "on hand" and triggered a false alarm.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Stale Data</div>
+        <h3>Three Merchants, Same Complaint</h3>
+        <p>Seniq, relayed verbatim by James Hargett: "When I have Claude pull from either the cached data or live, there still seems to be stale data." Duvin's Brandon sees residual un-updated data when he reworks purchase orders and works around it by downloading directly. Bogey Bros built an audit. Three existing tickets already cover the ground — a pipeline outage that froze beta data for four days, exposing real freshness so stale can be told from quiet, and general observability. Ashwin's ask: "specifics here will help us a ton tbh."</p>
+      </div>
+    </div>
+
+    <div class="two-cols">
+      <div class="story-block">
+        <div class="kicker">The Harness</div>
+        <h3>Pipeline Stops Itself and Asks for a Human</h3>
+        <p>Scott Meadows ran the internal pipeline agent end to end for the first time, on a small toolbar ticket. It paused itself: "⚠️ COVERAGE GATE: human approval required." It had no integration or end-to-end coverage for a merchant-facing data-grid flow and could not add any, because the only end-to-end specs in that app are a smoke file that is entirely skipped and an auth-and-navigation file, and no end-to-end job is wired into the pull-request workflow at all. Everything else was covered — 151 unit tests plus 119 unedited call-site regression tests. Notably it verified the coverage claim rather than asserting it, and the resumed fix pass caught two things the first round had missed. Scott approved. Harish's conclusion: "We need to skip e2e for front end." Scott's own postscript the next morning was more useful — the ticket was under-specified and he had made incorrect product assumptions; what should he have used to catch that? Dave's answer: work out with Claude what should have been caught earlier, and put that in the spec.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Shadow Tooling</div>
+        <h3>Merchant Success Is Quietly Shipping Apps</h3>
+        <p>A thread that started as an invitation from a founder pitching an artifact-hosting product turned into the clearest picture yet of what the team is building on its own. River Crawford has built a vendor scorecard comparing intended units against packing lists and receipt variances, and a wholesale order-taking app for field sales. Seth Horton is building a purchase-order customiser on Next.js with server-side PDF rendering. Megan's AI inventory-planning service runs on the same pattern. Kyle Hency wants Kelley using these in sales processes "where we know there is a gap, but we can vibe code something small the brand is getting upside down about. Sometimes these are things we'll never build" — and wants Seth teaching go-to-market how to do it at the on-site. Seth's cost note is the practical one: hosting is cheap, agent runtime is not, and a daily ten-minute agent job is roughly $75 a month.</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p>"I just really really really want this to be an agentic workflow, driven by policy and config docs, and not try to build a bloated deterministic rules engine."</p>
+      <div class="attr">— Dave Wardell, Wed Aug 12 · #engineering</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 8 — AROUND GOODDAY ================= -->
+  <section class="page" id="p8">
+    <div class="section-flag"><span class="flag">Around GoodDay</span><span class="pageno mono">P.8 · Vol. I No. 14</span></div>
+
+    <div class="headline">
+      <div class="kicker">Company Life</div>
+      <h2>Two Ledger Kings, One Cancelled Meeting, and a Counter That Reset the Next Morning</h2>
+      <div class="subhead">Vishal Marocha hits two years and Troy Lowe three. The Austin on-site gets a theme and an agenda. And the days-without-a-recon-incident counter on Wednesday's All Hands deck was overtaken by events before breakfast on Thursday.</div>
+      <div class="byline">Sources: All Hands (Aug 12), VOTM (cancelled), #goodday-team</div>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-body">
+        <p>Dave Wardell opened the week with two anniversaries he admitted he had missed: Vishal Marocha passed two years with GoodDay in July, and Troy Lowe passed three the week before. "Absolutely incredible journey and impact, grateful for you both — our Ledger Kings!" Vishal's reply was the one the channel reacted to: "Wild times in tech and couldn't ask for a better group of people to be in the trenches with."</p>
+        <p>Wednesday's All Hands ran with Merchant Success on the personal spotlight and three product demos queued — TikTok, the AG Grid reset button, and credit memo sync to QuickBooks. The agenda carried a live counter for days without an inventory reconciliation incident, with the callout "Current goal = 90 days. Next up, 365 days." Thursday morning brought five overnight recon failures. The parking lot also carried a line reading "Toccin win — largest contract ever?" — the question mark is in the original, and no celebration followed in channel, so the Gazette is leaving it as an open question.</p>
+        <p>The FY26 Austin on-site runs Tuesday to Thursday next week under the theme "Finish the job." Hard blocks: State of the Business and Product Vision plus an AMA on Tuesday from nine to two; an accounting walkthrough Wednesday morning, functional working sessions for go-to-market and Merchant Success in the afternoon, and the full-team dinner Wednesday evening; a presentation Thursday late morning. Out-of-towners are at Hotel Magdelena — though the Key Dates block in the Notion doc still lists the Carpenter Hotel and its old booking code, which somebody should fix before Monday.</p>
+      </div>
+      <div class="sidebar">
+        <h4>Comings &amp; Goings</h4>
+        <ul>
+          <li><b>Vishal Marocha</b> — 2 years. <b>Troy Lowe</b> — 3 years.</li>
+          <li><b>Troy</b> holds ATC Aug 10–16, taking over from Rob Hatfield.</li>
+          <li><b>Harish</b> back from PTO and visibly unblocking; travelling Aug 17.</li>
+          <li><b>No</b> new hires, departures or PTO announced in the window.</li>
+        </ul>
+        <h4>On-Site · Aug 18–20</h4>
+        <p style="font-size:12px;">Theme: <b>"Finish the job."</b> Hotel Magdelena for out-of-towners; full-team dinner Wednesday. Kyle has booked a whole-team pipeline scrub for Thursday afternoon after the agenda ends, and wants Seth teaching go-to-market how to build small internal apps.</p>
+      </div>
+    </div>
+
+    <div class="two-cols">
+      <div class="story-block">
+        <div class="kicker">Voice of the Merchant</div>
+        <h3>The Meeting That Didn't Happen</h3>
+        <p>Hunter Leeming cancelled Thursday's VOTM at 8:47 a.m. with a single line: "given the amount going today, I'm going to cancel VOTM. Please post any urgent requests here." The agenda that went undiscussed is worth publishing as a docket rather than a set of answers — Guizio wanting a date for three-way match, Over The Moon's Shopify Flows, the ERD barcode issue, bulk work order uploads, DCL fulfilment app locations, and the question of whether a SKU can be reclassified once it has been labelled a virtual kit. The Notion page still shows the meeting as upcoming, with every action item reading TBD.</p>
+      </div>
+      <div class="story-block">
+        <div class="kicker">Culture</div>
+        <h3>Chocolate, Owed and Delivered</h3>
+        <p>David Ortiz called out Noel Klein for GoodDay's Team and Merchant Value behaviours: joining an ad-hoc SaunaBox call to work through presales issues within minutes of being added to a thread, while David was stuck on a Canopy call that had run over. David closed with "I owe you some Marabou Mjölkchoklad." Noel's reply, with a photograph attached: "Already on its way..." Elsewhere Kyle Hency is co-hosting the Ecomm Cowboy show on Monday — "It's a pretty wild show, but wardeez and I saw them headline the Shopify DotDev in the middle of the conference."</p>
+      </div>
+    </div>
+
+    <div class="record-banner">
+      <b>Corrections desk:</b> Noel Klein flagged last Friday that the masthead on the then-current issue still read <span class="mono">FRIDAY, JULY 31, 2026</span>. It did. No. 13 shipped with the date corrected, and the Gazette has checked this one twice. Separately, the Vercel access problem that dogged No. 12 has a root cause and a fix — Dave Wardell narrowed GitHub repository access for Vercel at the organisation level after an unrelated change blocked engineers from merging for seven hours, and posted a "mea culpa" in #engineering. No access failures were reported this week.
+    </div>
+
+    <div class="pullquote">
+      <p>"Absolutely incredible journey and impact, grateful for you both… our Ledger Kings!"</p>
+      <div class="attr">— Dave Wardell, Mon Aug 10 · #goodday-team</div>
+    </div>
+
+    <div class="colophon">
+      THE GOODDAY GAZETTE · Vol. I No. 14 · Issued Friday, August 14, 2026 · Reporting August 7 – August 13, 2026.<br>
+      Compiled from 18 internal Slack channels, 88 Gong calls (66 Merchant Success, 14 sales, 8 partnerships), ~213 Pylon tickets, Linear, and Notion (All Hands / VOTM). The ~213 ticket figure is derived from the highest and lowest issue numbers in the window (9792 − 9580 + 1); gaps in the sequence are deleted or merged issues, so treat it as an approximate upper bound. Pylon does not expose account names through the interface available to us, so no per-merchant ticket ranking is published this issue. The 91-PR and −25.2% figures come from Workweave's week in review covering August 4–10, which overlaps but does not exactly match this reporting window. The All Hands page (meeting Aug 12) is an agenda document still marked "Upcoming" with no decisions or action items recorded, and the VOTM page for the week was never dated because the meeting was cancelled — nothing on P.8 is reported as an outcome of either. "Toccin win — largest contract ever?" appears on the All Hands parking lot as an open question and is reported as such. Empty project channels omitted: #project-csv-imports, #project-retail-pos, #project-ag-grid. Gong transcriptions of "ShipHero" corrected throughout. Figures carried in past issues that did not appear in this week's sources — the Eby valuation gap and the Lola stress-test result among them — are deliberately not repeated. Internal-only; access-gated via Vercel Auth. Set in Bodoni, Iowan Old Style, and Courier New. All the inventory that's fit to print.
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var nav=document.getElementById('pageNav');
+  var buttons=nav.querySelectorAll('button[data-page]');
+  var pages=document.querySelectorAll('.page');
+  function show(n){
+    pages.forEach(function(p){p.classList.toggle('active',p.id==='p'+n);});
+    buttons.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-page')===String(n));});
+    if(history.replaceState){history.replaceState(null,'','#p'+n);}
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  buttons.forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-page'));});});
+  var h=(location.hash.match(/p([1-8])/)||[])[1];
+  if(h){show(h);}
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT')return;
+    if(e.key>='1'&&e.key<='8'){show(e.key);}
+    var cur=parseInt((document.querySelector('.page.active')||{id:'p1'}).id.slice(1),10);
+    if(e.key==='ArrowRight'&&cur<8){show(cur+1);}
+    if(e.key==='ArrowLeft'&&cur>1){show(cur-1);}
+  });
+  document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+  var rb=document.getElementById('readBtn');
+  try{if(localStorage.getItem('gg_reading')==='1'){document.body.classList.add('reading');}}catch(e){}
+  rb.addEventListener('click',function(){
+    document.body.classList.toggle('reading');
+    try{localStorage.setItem('gg_reading',document.body.classList.contains('reading')?'1':'0');}catch(e){}
+  });
+  document.querySelectorAll('.table-search').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var q=inp.value.toLowerCase();
+      var rows=document.getElementById(inp.getAttribute('data-target')).querySelectorAll('tbody tr');
+      rows.forEach(function(r){r.style.display=r.textContent.toLowerCase().indexOf(q)>-1?'':'none';});
+    });
+  });
+})();
+</script>
+</body>
+</html>
